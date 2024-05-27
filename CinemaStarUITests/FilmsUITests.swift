@@ -24,7 +24,7 @@ final class FilmsUITests: XCTestCase {
         horizontalScrollBar1PageCollectionView.swipeUp()
     }
 
-    ///Тест на тап и переход к другому экрану
+    /// Тест на тап и переход к другому экрану
     func testGoToDetailsScreen() {
         let app = XCUIApplication()
         app.collectionViews.cells.otherElements.containing(.staticText, identifier: "Демон революции\n⭐️  6.2").element
