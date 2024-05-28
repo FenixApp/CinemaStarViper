@@ -46,11 +46,11 @@ final class RecommendFilmViewCell: UICollectionViewCell {
     // MARK: - Public Methods
 
     func configureCell(recommendFilm: SimilarMoviesDTO) {
-        imageRequest = ImageRequest(url: recommendFilm.poster.url)
-        imageRequest?.execute(withCompletion: { [weak self] image in
-            self?.filmImageView.image = image
-        })
-        nameLabel.text = recommendFilm.name
+//        imageRequest = ImageRequest(url: recommendFilm.poster.url)
+//        imageRequest?.execute(withCompletion: { [weak self] image in
+//            self?.filmImageView.image = image
+//        })
+//        nameLabel.text = recommendFilm.name
     }
 
     // MARK: - Private Methods

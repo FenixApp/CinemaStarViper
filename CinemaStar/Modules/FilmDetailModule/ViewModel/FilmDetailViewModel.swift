@@ -14,6 +14,8 @@ protocol FilmDetailViewModelProtocol {
 }
 
 final class FilmDetailViewModel: FilmDetailViewModelProtocol {
+    func startFetch() {}
+
     // MARK: - Public Properties
 
     public var updateViewState: ((ViewState<FilmDetail>) -> ())?
@@ -39,14 +41,14 @@ final class FilmDetailViewModel: FilmDetailViewModelProtocol {
 
     // MARK: - Public Methods
 
-    func startFetch() {
-        guard let filmId else { return }
-        let filmDetailResource = FilmDetailResource(methodPath: "/\(filmId)")
-        filmDetailRequest = APIRequest(resource: filmDetailResource)
-        filmDetailRequest?.execute(withCompletion: { [weak self] filmDetailDTO in
-            guard let filmDetailDTO else { return }
-            let filmDetail = FilmDetail(filmDetailDTO: filmDetailDTO)
-            self?.updateViewState?(.data(filmDetail))
-        })
-    }
+//    func startFetch() {
+//        guard let filmId else { return }
+//        let filmDetailResource = FilmDetailResource(methodPath: "/\(filmId)")
+//        filmDetailRequest = APIRequest(resource: filmDetailResource)
+//        filmDetailRequest?.execute(withCompletion: { [weak self] filmDetailDTO in
+//            guard let filmDetailDTO else { return }
+//            let filmDetail = FilmDetail(filmDetailDTO: filmDetailDTO)
+//            self?.updateViewState?(.data(filmDetail))
+//        })
+//    }
 }
