@@ -21,7 +21,8 @@ final class FilmDetailUITests: XCTestCase {
 
         let tablesQuery = app.tables
         let staticText = tablesQuery/*@START_MENU_TOKEN@*/
-            .staticTexts["Орда\n⭐️  6.1"]/*[[".cells.staticTexts[\"Орда\\n⭐️  6.1\"]",".staticTexts[\"Орда\\n⭐️  6.1\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+            .staticTexts["Орда\n⭐️  6.1"]/* [[".cells.staticTexts[\"Орда\\n⭐️  6.1\"]",".staticTexts[\"Орда\\n⭐️
+             6.1\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@ */
         staticText.tap()
         staticText.swipeUp()
         staticText.swipeDown()

@@ -90,7 +90,7 @@ final class DescriptionViewCell: UITableViewCell {
     // MARK: - Public Methods
 
     func configure(film: FilmDetail) {
-        persons = film.persons
+//        persons = film.persons
         descriptionLabel.text = film.description
         var infoText = ""
         if let year = film.year {
@@ -208,7 +208,7 @@ extension DescriptionViewCell: UICollectionViewDataSource {
             withReuseIdentifier: String(describing: PersonViewCell.self),
             for: indexPath
         ) as? PersonViewCell else { return UICollectionViewCell() }
-        cell.configureCell(personName: persons[indexPath.item].name, personImageUrl: persons[indexPath.item].photo)
+//        cell.configureCell(personName: persons[indexPath.item].name, personImageUrl: persons[indexPath.item].photo)
         return cell
     }
 }

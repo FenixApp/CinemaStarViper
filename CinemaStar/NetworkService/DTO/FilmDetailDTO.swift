@@ -27,19 +27,19 @@ struct DetailFilmDTO: Codable {
     let similarMovies: [SimilarMoviesDTO]?
 }
 
-/// Старана
-struct CountriesDTO: Codable {
-    /// Название
-    let name: String
-}
+///// Старана
+// struct CountriesDTO: Codable {
+//    /// Название
+//    let name: String
+// }
 
-/// Актер
-struct PersonDTO: Codable {
-    /// Фото
-    let photo: URL
-    /// Имя
-    let name: String?
-}
+///// Актер
+// struct PersonDTO: Codable {
+//    /// Фото
+//    let photo: URL
+//    /// Имя
+//    let name: String?
+// }
 
 /// Язык
 struct SpokenLanguageDTO: Codable {

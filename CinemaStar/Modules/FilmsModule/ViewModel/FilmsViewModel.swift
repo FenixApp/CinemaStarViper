@@ -44,7 +44,7 @@ final class FilmsViewModel: FilmsViewModelProtocol {
             guard let filmListDTO else { return }
             var films: [Film] = []
             for filmDTO in filmListDTO.docs {
-                films.append(Film(filmDTO: filmDTO))
+//                films.append(Film(filmDTO: filmDTO))
             }
             self?.updateViewState?(.data(films))
         })
