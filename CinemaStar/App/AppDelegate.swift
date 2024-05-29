@@ -11,7 +11,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         true
     }
-
     // MARK: UISceneSession Lifecycle
 
     func application(
