@@ -3,18 +3,6 @@
 
 import Foundation
 
-///// Состояние загрузки данных
-// enum ViewState<Model> {
-//    /// Загрузка данных
-//    case loading
-//    /// Данные загружены
-//    case data(Model)
-//    /// Данных отсутствуют
-//    case noData
-//    /// Ошибка
-//    case error(_ error: Error)
-// }
-
 /// Состояние  данных на экране фильмов
 public enum ViewState<Model> {
     /// Данные загружаются

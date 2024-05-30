@@ -2,16 +2,14 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
+import SwiftData
 import SwiftUI
 
-/// Протокол для взаимодействия с вью
-protocol MoviesViewProtocol {}
-
 /// Вью экрана с фильмами
-struct MoviesView: View, MoviesViewProtocol {
+struct MoviesView: View {
     @StateObject var presenter: MoviesPresenter
-
-    let items = Array(1 ... 13)
+    @Query var swiftDataStoredMovies: [SwiftDataMovie]
+    @Environment(\.modelContext) var context
 
     var body: some View {
         NavigationStack {
@@ -19,9 +17,13 @@ struct MoviesView: View, MoviesViewProtocol {
                 VStack {
                     switch presenter.state {
                     case .loading:
-                        Text("Loading")
+                        MoviesShimmerView()
                     case let .data(fetchedMovies):
-                        MoviesCollectionView(movies: fetchedMovies)
+                        if fetchedMovies.isEmpty {
+                            MoviesCollectionView(swiftDataMovies: swiftDataStoredMovies)
+                        } else {
+                            MoviesCollectionView(movies: fetchedMovies)
+                        }
                     case .error:
                         Text("ERROR!!!")
                     }
@@ -30,7 +32,7 @@ struct MoviesView: View, MoviesViewProtocol {
                 .background(
                     NavigationLink(
                         destination:
-                        ViewBuilder.buildMoviesDetailModule(id: presenter.selectedMovieID ?? 0),
+                        Builder.buildMoviesDetailModule(id: presenter.selectedMovieID ?? 0),
                         isActive: Binding(
                             get: { presenter.selectedMovieID != nil },
                             set: { if !$0 { presenter.selectedMovieID = nil } }
@@ -39,10 +41,15 @@ struct MoviesView: View, MoviesViewProtocol {
                         EmptyView()
                     }
                 )
+                .onAppear {
+                    guard case .loading = presenter.state else { return }
+                    if swiftDataStoredMovies.isEmpty {
+                        presenter.prepareMovies(context: context)
+                    } else {
+                        presenter.state = .data([])
+                    }
+                }
             }
-        }
-        .onAppear {
-            presenter.prepareMovies()
         }
     }
 
@@ -69,6 +76,7 @@ struct MoviesCollectionView: View {
     ]
 
     var movies: [Movie] = []
+    var swiftDataMovies: [SwiftDataMovie] = []
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -79,31 +87,57 @@ struct MoviesCollectionView: View {
                     .fontWeight(.heavy)
             }
             .padding(.horizontal)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(movies, id: \.id) { movie in
-                        VStack {
-                            if let image = movie.image {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .frame(width: 170, height: 220)
-                                    .cornerRadius(8)
-                            } else {
-                                ProgressView()
-                                    .frame(width: 170, height: 220)
+                    if movies.isEmpty {
+                        ForEach(swiftDataMovies, id: \.id) { movie in
+                            VStack {
+                                if let image = UIImage(data: movie.image ?? Data()) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .frame(width: 170, height: 220)
+                                        .cornerRadius(8)
+                                } else {
+                                    ProgressView()
+                                        .frame(width: 170, height: 220)
+                                }
+                                Spacer()
+                                VStack(alignment: .leading) {
+                                    Text(String(movie.movieName))
+                                    Text("⭐️ \(String(format: "%.1f", movie.rating))")
+                                }
+                                .frame(width: 170, height: 40, alignment: .leading)
                             }
-                            Spacer()
-                            VStack(alignment: .leading) {
-                                Text(String(movie.movieName ?? ""))
-                                Text("⭐️ \(String(format: "%.1f", movie.rating ?? 0.0))")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .onTapGesture {
+                                presenter.goToDetailScreen(with: movie.movieID)
                             }
-                            .frame(width: 170, height: 40, alignment: .leading)
                         }
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .onTapGesture {
-                            presenter.goToDetailScreen(with: movie.id)
-                            print(movie.id)
+                    } else {
+                        ForEach(movies, id: \.id) { movie in
+                            VStack {
+                                if let image = movie.image {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .frame(width: 170, height: 220)
+                                        .cornerRadius(8)
+                                } else {
+                                    ProgressView()
+                                        .frame(width: 170, height: 220)
+                                }
+                                Spacer()
+                                VStack(alignment: .leading) {
+                                    Text(String(movie.movieName ?? ""))
+                                    Text("⭐️ \(String(format: "%.1f", movie.rating ?? 0.0))")
+                                }
+                                .frame(width: 170, height: 40, alignment: .leading)
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .onTapGesture {
+                                presenter.goToDetailScreen(with: movie.id)
+                            }
                         }
                     }
                 }

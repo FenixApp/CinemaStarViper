@@ -7,7 +7,7 @@ import UIKit
 /// Протокол для взаимодействия с нетворк сервисом
 protocol NetworkServiceProtocol {
     func fetchMovies() -> AnyPublisher<MoviesDTO, Error>
-    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Never>
+    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error>
     func fetchMovie(by id: Int) -> AnyPublisher<MovieDTO, Error>
 }
 
@@ -18,7 +18,7 @@ class NetworkService: NetworkServiceProtocol {
         static let moviesUrl = "https://api.kinopoisk.dev/v1.4/movie/search?query=история"
     }
 
-    func fetchMovies() -> AnyPublisher<MoviesDTO, any Error> {
+    func fetchMovies() -> AnyPublisher<MoviesDTO, Error> {
         guard let url = URL(string: Constants.moviesUrl) else {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()
@@ -33,7 +33,7 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    func fetchMovie(by id: Int) -> AnyPublisher<MovieDTO, any Error> {
+    func fetchMovie(by id: Int) -> AnyPublisher<MovieDTO, Error> {
         guard let url = URL(string: "\(Constants.baseUrl)" + "\(id)") else {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()
@@ -48,10 +48,10 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
+    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error> {
         URLSession.shared.dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
-            .replaceError(with: nil)
+            .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
 }
