@@ -50,25 +50,26 @@ struct FilmDetail {
 }
 
 /// Детали фильма
-struct MovieDetail {
+struct MovieDetail: Identifiable {
     let movieName: String
     let movieRating: Double?
-    let imageURL: URL?
-    let id: Int
+    let imageURL: String?
+    let movieID: Int
     let description: String?
     let year: Int?
     let country: String?
     let contentType: String?
     var actors: [MovieActor] = []
     let language: String?
-    var similarMovies: [Movie] = []
+    var similarMovies: [SimilarMovie] = []
     var image: UIImage?
+    var id = UUID()
 
     init(dto: MovieDTO) {
         movieName = dto.name
         movieRating = dto.rating?.kp
-        imageURL = URL(string: dto.poster.url)
-        id = dto.id
+        imageURL = dto.poster.url
+        movieID = dto.id
         description = dto.description
         year = dto.year
         country = dto.countries?.first?.name ?? ""
@@ -85,16 +86,30 @@ struct MovieDetail {
                 actors.append(actor)
             }
         }
-        dto.similarMovies?.forEach { similarMovies.append(Movie(dto: $0)) }
+        dto.similarMovies?.forEach { similarMovies.append(SimilarMovie(dto: $0)) }
+    }
+
+    init() {
+        movieName = ""
+        movieRating = nil
+        imageURL = nil
+        movieID = 1
+        description = nil
+        year = nil
+        country = nil
+        contentType = nil
+        language = nil
     }
 }
 
 /// Информация об актере
-struct MovieActor {
+struct MovieActor: Identifiable, Codable {
+    var id = UUID()
     /// Имя актера
     let name: String
     /// Ссылка на изображение актера
     let imageURL: String
+    var image: Data?
 
     init?(dto: PersonDTO) {
         guard let name = dto.name else { return nil }

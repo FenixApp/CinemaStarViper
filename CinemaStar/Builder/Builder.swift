@@ -30,7 +30,7 @@ final class Builder: BuilderProtocol {
 
 import SwiftUI
 
-/// Билдер приложения
+/// Билдер приложения на SwiftUI
 final class ViewBuilder {
     static func buildMoviesModule() -> some View {
         let presenter = MoviesPresenter()

@@ -25,14 +25,14 @@ struct Film {
 
 /// Модель фильма
 struct Movie {
-    let imageUrl: URL?
+    let imageUrl: String?
     let movieName: String?
     let rating: Double?
     let id: Int
     var image: UIImage?
 
     init(dto: MovieDTO) {
-        imageUrl = URL(string: dto.poster.url)
+        imageUrl = dto.poster.url
         movieName = dto.name
         rating = dto.rating?.kp
         id = dto.id

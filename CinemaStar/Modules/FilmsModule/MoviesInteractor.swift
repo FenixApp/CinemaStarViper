@@ -2,7 +2,8 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
-import UIKit
+import SwiftData
+import SwiftUI
 
 /// Протокол для взаимодействия с интерактором
 protocol MoviesInteractorProtocol {
@@ -27,21 +28,26 @@ class MoviesInteractor: MoviesInteractorProtocol {
                     print("Failed to fetch users: \(error.localizedDescription)")
                 }
             }, receiveValue: { [unowned self] moviesDTO in
-                let movies = moviesDTO.docs.map { dto -> Movie in
-                    var movie = Movie(dto: dto)
-                    if let url = movie.imageUrl {
+                var movies = moviesDTO.docs.map { Movie(dto: $0) }
+
+                let group = DispatchGroup()
+
+                for (index, movie) in movies.enumerated() {
+                    if let url = URL(string: movie.imageUrl ?? "") {
+                        group.enter()
                         networkService?.fetchImage(from: url)
                             .receive(on: DispatchQueue.main)
-                            .sink { image in
-                                movie.image = image
-                                self.presenter?.didUpdateMovie(movie)
-                            }
+                            .sink(receiveCompletion: { _ in
+                                group.leave()
+                            }, receiveValue: { image in
+                                movies[index].image = image
+                            })
                             .store(in: &cancellablesSet)
                     }
-                    return movie
                 }
-                presenter?.didFetchMovies(movies)
-
+                group.notify(queue: .main) {
+                    self.presenter?.didFetchMovies(movies)
+                }
             })
             .store(in: &cancellablesSet)
     }

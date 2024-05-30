@@ -2,16 +2,14 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
+import SwiftData
 import SwiftUI
 
-/// Протокол для взаимодействия с вью
-protocol MoviesViewProtocol {}
-
 /// Вью экрана с фильмами
-struct MoviesView: View, MoviesViewProtocol {
+struct MoviesView: View {
     @StateObject var presenter: MoviesPresenter
-
-    let items = Array(1 ... 13)
+    @Query var swiftDataStoredMovies: [SwiftDataMovie]
+    @Environment(\.modelContext) var context
 
     var body: some View {
         NavigationStack {
@@ -19,9 +17,13 @@ struct MoviesView: View, MoviesViewProtocol {
                 VStack {
                     switch presenter.state {
                     case .loading:
-                        Text("Loading")
+                        shimmer
                     case let .data(fetchedMovies):
-                        MoviesCollectionView(movies: fetchedMovies)
+                        if fetchedMovies.isEmpty {
+                            MoviesCollectionView(swiftDataMovies: swiftDataStoredMovies)
+                        } else {
+                            MoviesCollectionView(movies: fetchedMovies)
+                        }
                     case .error:
                         Text("ERROR!!!")
                     }
@@ -39,10 +41,43 @@ struct MoviesView: View, MoviesViewProtocol {
                         EmptyView()
                     }
                 )
+                .onAppear {
+                    guard case .loading = presenter.state else { return }
+                    if swiftDataStoredMovies.isEmpty {
+                        presenter.prepareMovies(context: context)
+                    } else {
+                        presenter.state = .data([])
+                    }
+                }
             }
         }
-        .onAppear {
-            presenter.prepareMovies()
+    }
+
+    private var shimmer: some View {
+        VStack {
+            Rectangle()
+                .fill(Color.appLightGray.opacity(0.3))
+                .cornerRadius(12)
+                .frame(width: 240, height: 60)
+                .padding(.trailing, 120)
+                .padding(.bottom, 25)
+                .shimmerPlaying()
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                ForEach(0 ..< 6, id: \.self) { _ in
+                    VStack {
+                        Rectangle()
+                            .fill(Color.appLightGray.opacity(0.3))
+                            .frame(width: 170, height: 200)
+                            .shimmerPlaying()
+                        Rectangle()
+                            .fill(Color.appLightGray.opacity(0.3))
+                            .frame(width: 170, height: 40)
+                            .shimmerPlaying()
+                    }
+                    .padding(.bottom, 16)
+                }
+            }
+            .padding(.horizontal, 10)
         }
     }
 
@@ -69,6 +104,7 @@ struct MoviesCollectionView: View {
     ]
 
     var movies: [Movie] = []
+    var swiftDataMovies: [SwiftDataMovie] = []
 
     var body: some View {
         VStack(alignment: .leading) {

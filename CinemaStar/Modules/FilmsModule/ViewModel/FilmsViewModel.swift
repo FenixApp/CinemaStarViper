@@ -40,14 +40,14 @@ final class FilmsViewModel: FilmsViewModelProtocol {
             queryItems: [URLQueryItem(name: "query", value: "История")]
         )
         filmsRequest = APIRequest(resource: apiResource)
-        filmsRequest?.execute(withCompletion: { [weak self] filmListDTO in
-            guard let filmListDTO else { return }
-            var films: [Film] = []
-            for filmDTO in filmListDTO.docs {
+//        filmsRequest?.execute(withCompletion: { [weak self] filmListDTO in
+//            guard let filmListDTO else { return }
+//            var films: [Film] = []
+//            for filmDTO in filmListDTO.docs {
 //                films.append(Film(filmDTO: filmDTO))
-            }
-            self?.updateViewState?(.data(films))
-        })
+//            }
+//            self?.updateViewState?(.data(films))
+//        })
     }
 
     func showDetailFilm(id: Int?) {
