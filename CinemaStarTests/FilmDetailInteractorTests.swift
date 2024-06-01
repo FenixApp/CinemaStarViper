@@ -7,7 +7,7 @@ import SwiftData
 import XCTest
 
 // Mock Presenter
-class MockFilmDetailPresenter: MoviesDetailPresenterProtocol {
+class MockFilmDetailPresenter: FilmDetailsPresenterProtocol {
     func prepareMovieDetails(by id: Int, context: ModelContext) {}
 
     var didFetchMovieDetail = false
@@ -20,13 +20,13 @@ class MockFilmDetailPresenter: MoviesDetailPresenterProtocol {
 }
 
 final class FilmDetailInteractorTests: XCTestCase {
-    var interactor: MoviesDetailInteractor!
+    var interactor: FilmDetailsInteractor!
     var mockNetworkService: MockNetworkService!
     var mockPresenter: MockFilmDetailPresenter!
 
     override func setUp() {
         super.setUp()
-        interactor = MoviesDetailInteractor()
+        interactor = FilmDetailsInteractor()
         mockNetworkService = MockNetworkService()
         mockPresenter = MockFilmDetailPresenter()
         interactor.networkService = mockNetworkService

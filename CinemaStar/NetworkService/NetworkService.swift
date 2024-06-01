@@ -6,20 +6,20 @@ import UIKit
 
 /// Протокол для взаимодействия с нетворк сервисом
 protocol NetworkServiceProtocol {
-    func fetchMovies() -> AnyPublisher<FilmsDTO, Error>
+    func fetchFilms() -> AnyPublisher<FilmsDTO, Error>
     func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error>
-    func fetchMovie(by id: Int) -> AnyPublisher<FilmDTO, Error>
+    func fetchFilm(by id: Int) -> AnyPublisher<FilmDTO, Error>
 }
 
 /// Нетворк сервис
 class NetworkService: NetworkServiceProtocol {
     enum Constants {
         static let baseUrl = "https://api.kinopoisk.dev/v1.4/movie/"
-        static let moviesUrl = "https://api.kinopoisk.dev/v1.4/movie/search?query=история"
+        static let filmsUrl = "https://api.kinopoisk.dev/v1.4/movie/search?query=история"
     }
 
-    func fetchMovies() -> AnyPublisher<FilmsDTO, Error> {
-        guard let url = URL(string: Constants.moviesUrl) else {
+    func fetchFilms() -> AnyPublisher<FilmsDTO, Error> {
+        guard let url = URL(string: Constants.filmsUrl) else {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()
         }
@@ -33,7 +33,7 @@ class NetworkService: NetworkServiceProtocol {
             .eraseToAnyPublisher()
     }
 
-    func fetchMovie(by id: Int) -> AnyPublisher<FilmDTO, Error> {
+    func fetchFilm(by id: Int) -> AnyPublisher<FilmDTO, Error> {
         guard let url = URL(string: "\(Constants.baseUrl)" + "\(id)") else {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()

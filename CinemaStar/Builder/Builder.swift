@@ -5,10 +5,10 @@ import SwiftUI
 
 /// Билдер приложения
 final class Builder {
-    static func buildMoviesModule() -> some View {
-        let presenter = MoviesPresenter()
-        let interactor = MoviesInteractor()
-        let router = MoviesRouter()
+    static func buildFilmsModule() -> some View {
+        let presenter = FilmsPresenter()
+        let interactor = FilmsInteractor()
+        let router = FilmsRouter()
         let networkService = NetworkService()
         let view = FilmsView(presenter: presenter)
 
@@ -21,12 +21,12 @@ final class Builder {
         return view
     }
 
-    static func buildMoviesDetailModule(id: Int) -> some View {
-        let interactor = MoviesDetailInteractor()
-        let presenter = MoviesDetailPresenter()
-        let router = MoviesDetailRouter()
+    static func buildFilmDetailsModule(id: Int) -> some View {
+        let interactor = FilmDetailsInteractor()
+        let presenter = FilmDetailsPresenter()
+        let router = FilmDetailsRouter()
         let networkService = NetworkService()
-        var view = MoviesDetailView(presenter: presenter)
+        var view = FilmDetailsView(presenter: presenter)
 
         view.id = id
         presenter.interactor = interactor

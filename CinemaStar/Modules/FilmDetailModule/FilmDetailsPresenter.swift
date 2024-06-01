@@ -1,4 +1,4 @@
-// MoviesDetailPresenter.swift
+// FilmDetailsPresenter.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
@@ -6,20 +6,20 @@ import Foundation
 import SwiftData
 
 ///  Протокол для взаимодействия с презентером
-protocol MoviesDetailPresenterProtocol: ObservableObject {
+protocol FilmDetailsPresenterProtocol: ObservableObject {
     func prepareMovieDetails(by id: Int, context: ModelContext)
     func didFetchMovieDetail(_ movie: FilmDetail)
 }
 
 /// Презентер для  экрана с детальным фильмом
-class MoviesDetailPresenter: MoviesDetailPresenterProtocol {
+class FilmDetailsPresenter: FilmDetailsPresenterProtocol {
     @Published var state: ViewState<FilmDetail> = .loading
 //    private var movieDetail = PassthroughSubject<SwiftDataMovieDetail, Never>()
     private var context: ModelContext?
 
-    var view: MoviesDetailView?
-    var interactor: MoviesDetailInteractorProtocol?
-    var router: MoviesDetailRouterProtocol?
+    var view: FilmDetailsView?
+    var interactor: FilmDetailsInteractorProtocol?
+    var router: FilmDetailsRouterProtocol?
 
     func prepareMovieDetails(by id: Int, context: ModelContext) {
         interactor?.fetchMovieDetails(by: id)

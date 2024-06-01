@@ -1,10 +1,10 @@
-// MoviesDetailRouter.swift
+// FilmDetailsRouter.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
 ///  Протокол для взаимодействия с роутером
-protocol MoviesDetailRouterProtocol {}
+protocol FilmDetailsRouterProtocol {}
 
 /// Роутер для  экрана с детальным фильмом
-class MoviesDetailRouter: MoviesDetailRouterProtocol {}
+class FilmDetailsRouter: FilmDetailsRouterProtocol {}

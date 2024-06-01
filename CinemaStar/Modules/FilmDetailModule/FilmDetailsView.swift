@@ -1,4 +1,4 @@
-// MoviesDetailView.swift
+// FilmDetailsView.swift
 // Copyright © RoadMap. All rights reserved.
 
 import SwiftData
@@ -7,13 +7,13 @@ import SwiftUI
 // swiftlint:disable all
 
 /// Вью экрана с детальным фильмом
-struct MoviesDetailView: View {
+struct FilmDetailsView: View {
     @Environment(\.modelContext) private var context: ModelContext
     @Query var movieDetail: [SwiftDataMovieDetail]
     @Environment(\.dismiss) var dismiss
     @State var isfavoritesTapped = false
     @State var isWatchButtonTapped = false
-    @StateObject var presenter: MoviesDetailPresenter
+    @StateObject var presenter: FilmDetailsPresenter
 
     var id: Int?
 
@@ -22,7 +22,7 @@ struct MoviesDetailView: View {
             ScrollView(showsIndicators: false) {
                 switch presenter.state {
                 case .loading:
-                    MoviesDetailsShimmerView()
+                    FilmDetailsShimmerView()
                 case let .data(movieDetail):
                     let storedMovie = self.movieDetail.first(where: { $0.movieID == id })
                     VStack {
@@ -100,7 +100,7 @@ struct MoviesDetailView: View {
         .foregroundColor(.white)
     }
 
-    init(presenter: MoviesDetailPresenter) {
+    init(presenter: FilmDetailsPresenter) {
         _presenter = StateObject(wrappedValue: presenter)
     }
 
@@ -244,7 +244,7 @@ struct MoviesDetailView: View {
 }
 
 #Preview {
-    MoviesDetailView(presenter: MoviesDetailPresenter())
+    FilmDetailsView(presenter: FilmDetailsPresenter())
 }
 
 // swiftlint:enable all

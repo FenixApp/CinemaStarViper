@@ -1,4 +1,4 @@
-// MoviesPresenter.swift
+// FilmsPresenter.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
@@ -8,7 +8,7 @@ import UIKit
 // swiftlint:disable all
 
 /// Протокол для взаимодействия с презентером
-protocol MoviesPresenterProtocol: ObservableObject {
+protocol FilmsPresenterProtocol: ObservableObject {
     /// Передача фильмов с интерактора во вью
     func didFetchMovies(_ movies: [Film])
     /// Заявка на получение фильмов с нетворк сервиса
@@ -18,17 +18,17 @@ protocol MoviesPresenterProtocol: ObservableObject {
 }
 
 /// Презентер экрана с фильмами
-class MoviesPresenter: MoviesPresenterProtocol {
+class FilmsPresenter: FilmsPresenterProtocol {
     @Published var state: ViewState<[Film]> = .loading
     @Published var selectedMovieID: Int?
-    @Published private var moviesToStore: [SwiftDataMovie] = []
+    @Published private var moviesToStore: [SwiftDataFilm] = []
     private var context: ModelContext?
 
     var cancellable: AnyCancellable?
 
     var view: FilmsView?
-    var interactor: MoviesInteractorProtocol?
-    var router: MoviesRouterProtocol?
+    var interactor: FilmsInteractorProtocol?
+    var router: FilmsRouterProtocol?
 
     func didFetchMovies(_ movies: [Film]) {
         state = .data(movies)
@@ -47,9 +47,9 @@ class MoviesPresenter: MoviesPresenterProtocol {
     func saveToStoredMovies(movies: [Film]) {
         for movie in movies {
             guard let imageData = movie.image?.jpegData(compressionQuality: 0.8) else { return }
-            moviesToStore.append(SwiftDataMovie(
+            moviesToStore.append(SwiftDataFilm(
                 imageUrl: movie.imageUrl ?? "",
-                movieName: movie.filmName ?? "",
+                filmName: movie.filmName ?? "",
                 rating: movie.rating ?? 0.0,
                 id: movie.id,
                 image: imageData

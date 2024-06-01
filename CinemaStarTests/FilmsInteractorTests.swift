@@ -8,11 +8,11 @@ import XCTest
 
 // Mock NetworkService
 class MockNetworkService: NetworkServiceProtocol {
-    func fetchMovie(by id: Int) -> AnyPublisher<CinemaStar.FilmDTO, any Error> {
+    func fetchFilm(by id: Int) -> AnyPublisher<CinemaStar.FilmDTO, any Error> {
         fetchMovieResult.publisher.eraseToAnyPublisher()
     }
 
-    func fetchMovies() -> AnyPublisher<FilmsDTO, any Error> {
+    func fetchFilms() -> AnyPublisher<FilmsDTO, any Error> {
         fetchMoviesResult.publisher.eraseToAnyPublisher()
     }
 
@@ -26,7 +26,7 @@ class MockNetworkService: NetworkServiceProtocol {
 }
 
 // Mock Presenter
-class MockMoviesPresenter: MoviesPresenterProtocol {
+class MockMoviesPresenter: FilmsPresenterProtocol {
     func prepareMovies(context: ModelContext) {}
     func goToDetailScreen(with id: Int) {}
 
@@ -40,13 +40,13 @@ class MockMoviesPresenter: MoviesPresenterProtocol {
 }
 
 final class FilmsInteractorTests: XCTestCase {
-    var interactor: MoviesInteractor!
+    var interactor: FilmsInteractor!
     var mockNetworkService: MockNetworkService!
     var mockPresenter: MockMoviesPresenter!
 
     override func setUp() {
         super.setUp()
-        interactor = MoviesInteractor()
+        interactor = FilmsInteractor()
         mockNetworkService = MockNetworkService()
         mockPresenter = MockMoviesPresenter()
         interactor.networkService = mockNetworkService

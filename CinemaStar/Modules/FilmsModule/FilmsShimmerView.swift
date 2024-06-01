@@ -1,10 +1,10 @@
-// MoviesShimmerView.swift
+// FilmsShimmerView.swift
 // Copyright © RoadMap. All rights reserved.
 
 import SwiftUI
 
 /// Shimmer view
-struct MoviesShimmerView: View {
+struct FilmsShimmerView: View {
     let items = Array(1 ... 6)
 
     let columns = [
@@ -60,5 +60,5 @@ struct MoviesShimmerView: View {
 }
 
 #Preview {
-    MoviesShimmerView()
+    FilmsShimmerView()
 }

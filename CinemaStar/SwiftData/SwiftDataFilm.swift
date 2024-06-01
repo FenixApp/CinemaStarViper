@@ -1,23 +1,23 @@
-// SwiftDataMovie.swift
+// SwiftDataFilm.swift
 // Copyright © RoadMap. All rights reserved.
 
 import SwiftData
 import UIKit
 
 @Model
-final class SwiftDataMovie {
+final class SwiftDataFilm {
     let imageUrl: String
-    let movieName: String
+    let filmName: String
     let rating: Double
-    let movieID: Int
+    let filmID: Int
     var image: Data?
     var id = UUID()
 
-    init(imageUrl: String, movieName: String, rating: Double, id: Int, image: Data?) {
+    init(imageUrl: String, filmName: String, rating: Double, id: Int, image: Data?) {
         self.imageUrl = imageUrl
-        self.movieName = movieName
+        self.filmName = filmName
         self.rating = rating
-        movieID = id
+        filmID = id
         self.image = image
     }
 }

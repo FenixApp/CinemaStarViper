@@ -7,8 +7,8 @@ import SwiftUI
 
 /// Вью экрана с фильмами
 struct FilmsView: View {
-    @StateObject var presenter: MoviesPresenter
-    @Query var swiftDataStoredMovies: [SwiftDataMovie]
+    @StateObject var presenter: FilmsPresenter
+    @Query var swiftDataStoredMovies: [SwiftDataFilm]
     @Environment(\.modelContext) var context
 
     var body: some View {
@@ -17,7 +17,7 @@ struct FilmsView: View {
                 VStack {
                     switch presenter.state {
                     case .loading:
-                        MoviesShimmerView()
+                        FilmsShimmerView()
                     case let .data(fetchedMovies):
                         if fetchedMovies.isEmpty {
                             MoviesCollectionView(swiftDataMovies: swiftDataStoredMovies)
@@ -32,7 +32,7 @@ struct FilmsView: View {
                 .background(
                     NavigationLink(
                         destination:
-                        Builder.buildMoviesDetailModule(id: presenter.selectedMovieID ?? 0),
+                        Builder.buildFilmDetailsModule(id: presenter.selectedMovieID ?? 0),
                         isActive: Binding(
                             get: { presenter.selectedMovieID != nil },
                             set: { if !$0 { presenter.selectedMovieID = nil } }
@@ -57,18 +57,18 @@ struct FilmsView: View {
         LinearGradient(colors: [.gradientFirst, .gradientSecond], startPoint: .top, endPoint: .bottom)
     }
 
-    init(presenter: MoviesPresenter) {
+    init(presenter: FilmsPresenter) {
         _presenter = StateObject(wrappedValue: presenter)
     }
 }
 
 #Preview {
-    FilmsView(presenter: MoviesPresenter())
+    FilmsView(presenter: FilmsPresenter())
 }
 
 /// Вью с фильмами
 struct MoviesCollectionView: View {
-    @EnvironmentObject var presenter: MoviesPresenter
+    @EnvironmentObject var presenter: FilmsPresenter
 
     let columns = [
         GridItem(.flexible()),
@@ -76,7 +76,7 @@ struct MoviesCollectionView: View {
     ]
 
     var movies: [Film] = []
-    var swiftDataMovies: [SwiftDataMovie] = []
+    var swiftDataMovies: [SwiftDataFilm] = []
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -103,7 +103,7 @@ struct MoviesCollectionView: View {
                                 }
                                 Spacer()
                                 VStack(alignment: .leading) {
-                                    Text(String(movie.movieName))
+                                    Text(String(movie.filmName))
                                     Text("⭐️ \(String(format: "%.1f", movie.rating))")
                                 }
                                 .frame(width: 170, height: 40, alignment: .leading)
@@ -111,7 +111,7 @@ struct MoviesCollectionView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .onTapGesture {
-                                presenter.goToDetailScreen(with: movie.movieID)
+                                presenter.goToDetailScreen(with: movie.filmID)
                             }
                         }
                     } else {

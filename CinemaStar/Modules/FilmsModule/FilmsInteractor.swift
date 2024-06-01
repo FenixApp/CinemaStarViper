@@ -1,4 +1,4 @@
-// MoviesInteractor.swift
+// FilmsInteractor.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
@@ -6,19 +6,19 @@ import SwiftData
 import SwiftUI
 
 /// Протокол для взаимодействия с интерактором
-protocol MoviesInteractorProtocol {
+protocol FilmsInteractorProtocol {
     func fetchMovies()
 }
 
 /// Интерактор экрана с фильмами
-class MoviesInteractor: MoviesInteractorProtocol {
-    var presenter: (any MoviesPresenterProtocol)?
+class FilmsInteractor: FilmsInteractorProtocol {
+    var presenter: (any FilmsPresenterProtocol)?
     var networkService: NetworkServiceProtocol?
 
     var cancellablesSet: Set<AnyCancellable> = []
 
     func fetchMovies() {
-        networkService?.fetchMovies()
+        networkService?.fetchFilms()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
