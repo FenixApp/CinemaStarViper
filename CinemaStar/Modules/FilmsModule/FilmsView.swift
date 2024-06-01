@@ -8,7 +8,7 @@ import SwiftUI
 /// Вью экрана с фильмами
 struct FilmsView: View {
     @StateObject var presenter: FilmsPresenter
-    @Query var swiftDataStoredMovies: [SwiftDataFilm]
+    @Query var swiftDataStoredFilms: [SwiftDataFilm]
     @Environment(\.modelContext) var context
 
     var body: some View {
@@ -20,9 +20,9 @@ struct FilmsView: View {
                         FilmsShimmerView()
                     case let .data(fetchedMovies):
                         if fetchedMovies.isEmpty {
-                            MoviesCollectionView(swiftDataMovies: swiftDataStoredMovies)
+                            FilmsCollectionView(swiftDataFilms: swiftDataStoredFilms)
                         } else {
-                            MoviesCollectionView(movies: fetchedMovies)
+                            FilmsCollectionView(films: fetchedMovies)
                         }
                     case .error:
                         Text("ERROR!!!")
@@ -32,10 +32,10 @@ struct FilmsView: View {
                 .background(
                     NavigationLink(
                         destination:
-                        Builder.buildFilmDetailsModule(id: presenter.selectedMovieID ?? 0),
+                        Builder.buildFilmDetailsModule(id: presenter.selectedFilmID ?? 0),
                         isActive: Binding(
-                            get: { presenter.selectedMovieID != nil },
-                            set: { if !$0 { presenter.selectedMovieID = nil } }
+                            get: { presenter.selectedFilmID != nil },
+                            set: { if !$0 { presenter.selectedFilmID = nil } }
                         )
                     ) {
                         EmptyView()
@@ -43,8 +43,8 @@ struct FilmsView: View {
                 )
                 .onAppear {
                     guard case .loading = presenter.state else { return }
-                    if swiftDataStoredMovies.isEmpty {
-                        presenter.prepareMovies(context: context)
+                    if swiftDataStoredFilms.isEmpty {
+                        presenter.prepareFilms(context: context)
                     } else {
                         presenter.state = .data([])
                     }
@@ -67,7 +67,7 @@ struct FilmsView: View {
 }
 
 /// Вью с фильмами
-struct MoviesCollectionView: View {
+struct FilmsCollectionView: View {
     @EnvironmentObject var presenter: FilmsPresenter
 
     let columns = [
@@ -75,8 +75,8 @@ struct MoviesCollectionView: View {
         GridItem(.flexible())
     ]
 
-    var movies: [Film] = []
-    var swiftDataMovies: [SwiftDataFilm] = []
+    var films: [Film] = []
+    var swiftDataFilms: [SwiftDataFilm] = []
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -89,10 +89,10 @@ struct MoviesCollectionView: View {
             .padding(.horizontal)
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    if movies.isEmpty {
-                        ForEach(swiftDataMovies, id: \.id) { movie in
+                    if films.isEmpty {
+                        ForEach(swiftDataFilms, id: \.id) { film in
                             VStack {
-                                if let image = UIImage(data: movie.image ?? Data()) {
+                                if let image = UIImage(data: film.image ?? Data()) {
                                     Image(uiImage: image)
                                         .resizable()
                                         .frame(width: 170, height: 220)
@@ -103,21 +103,21 @@ struct MoviesCollectionView: View {
                                 }
                                 Spacer()
                                 VStack(alignment: .leading) {
-                                    Text(String(movie.filmName))
-                                    Text("⭐️ \(String(format: "%.1f", movie.rating))")
+                                    Text(String(film.filmName))
+                                    Text("⭐️ \(String(format: "%.1f", film.rating))")
                                 }
                                 .frame(width: 170, height: 40, alignment: .leading)
                             }
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .onTapGesture {
-                                presenter.goToDetailScreen(with: movie.filmID)
+                                presenter.goToDetailScreen(with: film.filmID)
                             }
                         }
                     } else {
-                        ForEach(movies, id: \.id) { movie in
+                        ForEach(films, id: \.id) { film in
                             VStack {
-                                if let image = movie.image {
+                                if let image = film.image {
                                     Image(uiImage: image)
                                         .resizable()
                                         .frame(width: 170, height: 220)
@@ -128,15 +128,15 @@ struct MoviesCollectionView: View {
                                 }
                                 Spacer()
                                 VStack(alignment: .leading) {
-                                    Text(String(movie.filmName ?? ""))
-                                    Text("⭐️ \(String(format: "%.1f", movie.rating ?? 0.0))")
+                                    Text(String(film.filmName ?? ""))
+                                    Text("⭐️ \(String(format: "%.1f", film.rating ?? 0.0))")
                                 }
                                 .frame(width: 170, height: 40, alignment: .leading)
                             }
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .onTapGesture {
-                                presenter.goToDetailScreen(with: movie.id)
+                                presenter.goToDetailScreen(with: film.id)
                             }
                         }
                     }

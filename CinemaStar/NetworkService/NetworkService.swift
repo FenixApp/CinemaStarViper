@@ -2,7 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
-import UIKit
+import SwiftUI
 
 /// Протокол для взаимодействия с нетворк сервисом
 protocol NetworkServiceProtocol {

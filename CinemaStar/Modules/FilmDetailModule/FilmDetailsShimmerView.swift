@@ -11,7 +11,7 @@ struct FilmDetailsShimmerView: View {
         backgroundStackView(color: gradientColor) {
             ScrollView(showsIndicators: false) {
                 VStack {
-                    makeMoviePosterView(movie: items)
+                    makeFilmPosterView(film: items)
                     Spacer()
                         .frame(height: 16)
                     watchButtonView
@@ -23,7 +23,7 @@ struct FilmDetailsShimmerView: View {
                     makeStarringView(movie: items)
                     Spacer()
                         .frame(height: 10)
-                    makeRecommendedMoviesView(movie: items)
+                    makeRecommendedFilmsView(movie: items)
                 }
             }
             .navigationBarBackButtonHidden(true)
@@ -42,7 +42,7 @@ struct FilmDetailsShimmerView: View {
         LinearGradient(colors: [.gradientFirst, .gradientSecond], startPoint: .top, endPoint: .bottom)
     }
 
-    private func makeMoviePosterView(movie: [Int]) -> some View {
+    private func makeFilmPosterView(film: [Int]) -> some View {
         HStack {
             ShimmerBoxView()
                 .frame(width: 170, height: 200)
@@ -114,7 +114,7 @@ struct FilmDetailsShimmerView: View {
         .foregroundColor(.white)
     }
 
-    private func makeRecommendedMoviesView(movie: [Int]) -> some View {
+    private func makeRecommendedFilmsView(movie: [Int]) -> some View {
         VStack(alignment: .leading) {
             ShimmerBoxView()
                 .frame(width: 355, height: 15)

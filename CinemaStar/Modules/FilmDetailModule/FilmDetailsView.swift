@@ -9,7 +9,7 @@ import SwiftUI
 /// Вью экрана с детальным фильмом
 struct FilmDetailsView: View {
     @Environment(\.modelContext) private var context: ModelContext
-    @Query var movieDetail: [SwiftDataFilmDetails]
+    @Query var filmDetail: [SwiftDataFilmDetails]
     @Environment(\.dismiss) var dismiss
     @State var isfavoritesTapped = false
     @State var isWatchButtonTapped = false
@@ -24,17 +24,17 @@ struct FilmDetailsView: View {
                 case .loading:
                     FilmDetailsShimmerView()
                 case let .data(movieDetail):
-                    let storedMovie = self.movieDetail.first(where: { $0.filmID == id })
+                    let storedFilm = filmDetail.first(where: { $0.filmID == id })
                     VStack {
-                        makeMoviePosterView(movie: movieDetail, storedMovie: storedMovie)
+                        makeFilmPosterView(film: movieDetail, storedFilm: storedFilm)
                         Spacer().frame(height: 16)
                         watchButtonView
                         Spacer().frame(height: 16)
-                        makeCountryProductionView(movie: movieDetail, storedMovie: storedMovie)
+                        makeCountryProductionView(film: movieDetail, storedFilm: storedFilm)
                         Spacer().frame(height: 16)
-                        makeStarringView(movie: movieDetail, storedMovie: storedMovie)
+                        makeStarringView(film: movieDetail, storedFilm: storedFilm)
                         Spacer().frame(height: 10)
-                        makeRecommendedMoviesView(movie: movieDetail, storedMovie: storedMovie)
+                        makeRecommendedFilmsView(film: movieDetail, storedFilm: storedFilm)
                     }
                 case .error:
                     Text("ERROR!!!")
@@ -53,8 +53,8 @@ struct FilmDetailsView: View {
         }
         .onAppear {
             guard case .loading = presenter.state else { return }
-            if movieDetail.first(where: { $0.filmID == self.id }) == nil {
-                presenter.prepareMovieDetails(by: id ?? 0, context: context)
+            if filmDetail.first(where: { $0.filmID == self.id }) == nil {
+                presenter.prepareFilmDetails(by: id ?? 0, context: context)
             } else {
                 presenter.state = .data(FilmDetail())
             }
@@ -104,9 +104,9 @@ struct FilmDetailsView: View {
         _presenter = StateObject(wrappedValue: presenter)
     }
 
-    private func makeMoviePosterView(movie: FilmDetail, storedMovie: SwiftDataFilmDetails? = nil) -> some View {
+    private func makeFilmPosterView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         HStack {
-            if let image = storedMovie?.image.flatMap(UIImage.init(data:)) ?? movie.image {
+            if let image = storedFilm?.image.flatMap(UIImage.init(data:)) ?? film.image {
                 Image(uiImage: image)
                     .resizable()
                     .frame(width: 170, height: 200)
@@ -116,12 +116,12 @@ struct FilmDetailsView: View {
                     .frame(width: 170, height: 200)
             }
             VStack(alignment: .leading) {
-                Text(storedMovie?.filmName ?? movie.filmName)
+                Text(storedFilm?.filmName ?? film.filmName)
                     .font(.system(size: 18))
                     .frame(width: 150, alignment: .leading)
                     .lineLimit(5)
                     .bold()
-                Text("⭐️ \(String(format: "%.1f", storedMovie?.filmRating ?? movie.filmRating ?? 0.0))")
+                Text("⭐️ \(String(format: "%.1f", storedFilm?.filmRating ?? film.filmRating ?? 0.0))")
             }
             .foregroundColor(.white)
             .frame(width: 170, height: 70, alignment: .leading)
@@ -130,15 +130,15 @@ struct FilmDetailsView: View {
         .padding(.leading, 18)
     }
 
-    private func makeCountryProductionView(movie: FilmDetail, storedMovie: SwiftDataFilmDetails? = nil) -> some View {
+    private func makeCountryProductionView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         VStack(alignment: .leading) {
-            Text(storedMovie?.filmDescription ?? movie.description ?? "")
+            Text(storedFilm?.filmDescription ?? film.description ?? "")
                 .font(.system(size: 14))
                 .lineLimit(5)
                 .foregroundColor(.white)
             Spacer()
             Text(
-                "\(String(storedMovie?.year ?? movie.year ?? 0)) / \(storedMovie?.country ?? movie.country ?? "") / \(storedMovie?.contentType ?? movie.contentType ?? "")"
+                "\(String(storedFilm?.year ?? film.year ?? 0)) / \(storedFilm?.country ?? film.country ?? "") / \(storedFilm?.contentType ?? film.contentType ?? "")"
             )
             .font(.system(size: 14))
             .foregroundColor(.descriptionText)
@@ -146,14 +146,14 @@ struct FilmDetailsView: View {
         .padding(.horizontal, 15)
     }
 
-    private func makeStarringView(movie: FilmDetail, storedMovie: SwiftDataFilmDetails? = nil) -> some View {
+    private func makeStarringView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         VStack(alignment: .leading) {
             Text("Актеры и съемочная группа")
                 .fontWeight(.medium)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    if let storedMovie = storedMovie {
-                        ForEach(storedMovie.actors, id: \.name) { actor in
+                    if let storedFilm = storedFilm {
+                        ForEach(storedFilm.actors, id: \.name) { actor in
                             VStack(spacing: 2) {
                                 if let imageData = actor.image,
                                    let image = UIImage(data: imageData)
@@ -172,7 +172,7 @@ struct FilmDetailsView: View {
                             }
                         }
                     } else {
-                        ForEach(movie.actors, id: \.name) { actor in
+                        ForEach(film.actors, id: \.name) { actor in
                             VStack(spacing: 2) {
                                 if let url = URL(string: actor.imageURL) {
                                     AsyncImage(url: url) { image in
@@ -197,7 +197,7 @@ struct FilmDetailsView: View {
                 .frame(height: 14)
             VStack(alignment: .leading, spacing: 5) {
                 Text("Язык")
-                Text(storedMovie?.language ?? movie.language ?? "")
+                Text(storedFilm?.language ?? film.language ?? "")
                     .foregroundColor(.descriptionText)
             }
             .font(.system(size: 14))
@@ -206,7 +206,7 @@ struct FilmDetailsView: View {
         .foregroundColor(.white)
     }
 
-    private func makeRecommendedMoviesView(movie: FilmDetail, storedMovie: SwiftDataFilmDetails? = nil) -> some View {
+    private func makeRecommendedFilmsView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         VStack(alignment: .leading) {
             Text("Смотрите также")
                 .font(.system(size: 14))
@@ -215,10 +215,10 @@ struct FilmDetailsView: View {
                 .frame(height: 12)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    let similarMovies = storedMovie?.similarFilms ?? movie.similarFilms
-                    ForEach(similarMovies, id: \.id) { movie in
+                    let similarFilms = storedFilm?.similarFilms ?? film.similarFilms
+                    ForEach(similarFilms, id: \.id) { film in
                         VStack(alignment: .leading, spacing: 8) {
-                            if let url = URL(string: movie.imageUrl ?? "") {
+                            if let url = URL(string: film.imageUrl ?? "") {
                                 AsyncImage(url: url) { image in
                                     image
                                         .resizable()
@@ -229,7 +229,7 @@ struct FilmDetailsView: View {
                                         .frame(width: 170, height: 220)
                                 }
                             }
-                            Text(movie.filmName ?? "???")
+                            Text(film.filmName ?? "???")
                                 .font(.system(size: 16))
                                 .frame(width: 170, height: 18, alignment: .leading)
                         }

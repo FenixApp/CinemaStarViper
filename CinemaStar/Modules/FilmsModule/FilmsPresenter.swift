@@ -10,9 +10,9 @@ import UIKit
 /// Протокол для взаимодействия с презентером
 protocol FilmsPresenterProtocol: ObservableObject {
     /// Передача фильмов с интерактора во вью
-    func didFetchMovies(_ movies: [Film])
+    func didFetchFilms(_ movies: [Film])
     /// Заявка на получение фильмов с нетворк сервиса
-    func prepareMovies(context: ModelContext)
+    func prepareFilms(context: ModelContext)
 
     func goToDetailScreen(with id: Int)
 }
@@ -20,8 +20,8 @@ protocol FilmsPresenterProtocol: ObservableObject {
 /// Презентер экрана с фильмами
 class FilmsPresenter: FilmsPresenterProtocol {
     @Published var state: ViewState<[Film]> = .loading
-    @Published var selectedMovieID: Int?
-    @Published private var moviesToStore: [SwiftDataFilm] = []
+    @Published var selectedFilmID: Int?
+    @Published private var filmsToStore: [SwiftDataFilm] = []
     private var context: ModelContext?
 
     var cancellable: AnyCancellable?
@@ -30,13 +30,13 @@ class FilmsPresenter: FilmsPresenterProtocol {
     var interactor: FilmsInteractorProtocol?
     var router: FilmsRouterProtocol?
 
-    func didFetchMovies(_ movies: [Film]) {
-        state = .data(movies)
-        saveToStoredMovies(movies: movies)
+    func didFetchFilms(_ films: [Film]) {
+        state = .data(films)
+        saveToStoredFilms(films: films)
     }
 
-    func prepareMovies(context: ModelContext) {
-        interactor?.fetchMovies()
+    func prepareFilms(context: ModelContext) {
+        interactor?.fetchFilms()
         self.context = context
     }
 
@@ -44,24 +44,24 @@ class FilmsPresenter: FilmsPresenterProtocol {
         router?.navigateToDetailScreen(with: self, id: id)
     }
 
-    func saveToStoredMovies(movies: [Film]) {
-        for movie in movies {
-            guard let imageData = movie.image?.jpegData(compressionQuality: 0.8) else { return }
-            moviesToStore.append(SwiftDataFilm(
-                imageUrl: movie.imageUrl ?? "",
-                filmName: movie.filmName ?? "",
-                rating: movie.rating ?? 0.0,
-                id: movie.id,
+    func saveToStoredFilms(films: [Film]) {
+        for film in films {
+            guard let imageData = film.image?.jpegData(compressionQuality: 0.8) else { return }
+            filmsToStore.append(SwiftDataFilm(
+                imageUrl: film.imageUrl ?? "",
+                filmName: film.filmName ?? "",
+                rating: film.rating ?? 0.0,
+                id: film.id,
                 image: imageData
             ))
         }
     }
 
     init() {
-        cancellable = $moviesToStore
-            .sink { [unowned self] movies in
-                for movie in movies {
-                    context?.insert(movie)
+        cancellable = $filmsToStore
+            .sink { [unowned self] films in
+                for film in films {
+                    context?.insert(film)
                 }
             }
     }

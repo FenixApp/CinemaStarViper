@@ -27,13 +27,13 @@ class MockNetworkService: NetworkServiceProtocol {
 
 // Mock Presenter
 class MockMoviesPresenter: FilmsPresenterProtocol {
-    func prepareMovies(context: ModelContext) {}
+    func prepareFilms(context: ModelContext) {}
     func goToDetailScreen(with id: Int) {}
 
     var didFetchMovies = false
     var fetchedMovies: [Film]?
 
-    func didFetchMovies(_ movies: [Film]) {
+    func didFetchFilms(_ movies: [Film]) {
         didFetchMovies = true
         fetchedMovies = movies
     }
@@ -75,7 +75,7 @@ final class FilmsInteractorTests: XCTestCase {
                 type: nil,
                 persons: nil,
                 spokenLanguages: nil,
-                similarMovies: nil
+                similarFilms: nil
             ),
             FilmDTO(
                 name: "Batman",
@@ -89,7 +89,7 @@ final class FilmsInteractorTests: XCTestCase {
                 type: nil,
                 persons: nil,
                 spokenLanguages: nil,
-                similarMovies: nil
+                similarFilms: nil
             )
         ])
         let image = UIImage()
@@ -98,7 +98,7 @@ final class FilmsInteractorTests: XCTestCase {
 
         let expectation = self.expectation(description: "fetchMovies")
 
-        interactor.fetchMovies()
+        interactor.fetchFilms()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             expectation.fulfill()
@@ -119,7 +119,7 @@ final class FilmsInteractorTests: XCTestCase {
 
         let expectation = self.expectation(description: "fetchMovies")
 
-        interactor.fetchMovies()
+        interactor.fetchFilms()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             expectation.fulfill()

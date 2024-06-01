@@ -6,7 +6,7 @@ import Foundation
 
 ///  Протокол для взаимодействия с интерактором
 protocol FilmDetailsInteractorProtocol {
-    func fetchMovieDetails(by id: Int)
+    func fetchFilmDetails(by id: Int)
 }
 
 /// Интерактор для  экрана с детальным фильмом
@@ -16,7 +16,7 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
 
     var cancellablesSet: Set<AnyCancellable> = []
 
-    func fetchMovieDetails(by id: Int) {
+    func fetchFilmDetails(by id: Int) {
         networkService?.fetchFilm(by: id)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -60,7 +60,7 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
 
                             group.notify(queue: .main) {
                                 movieDetail.actors = actors
-                                self.presenter?.didFetchMovieDetail(movieDetail)
+                                self.presenter?.didFetchFilmDetail(movieDetail)
                             }
                         }
                         .store(in: &cancellablesSet)

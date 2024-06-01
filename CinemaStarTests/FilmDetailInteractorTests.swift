@@ -8,12 +8,12 @@ import XCTest
 
 // Mock Presenter
 class MockFilmDetailPresenter: FilmDetailsPresenterProtocol {
-    func prepareMovieDetails(by id: Int, context: ModelContext) {}
+    func prepareFilmDetails(by id: Int, context: ModelContext) {}
 
     var didFetchMovieDetail = false
     var fetchedMovieDetail: FilmDetail?
 
-    func didFetchMovieDetail(_ movieDetail: FilmDetail) {
+    func didFetchFilmDetail(_ movieDetail: FilmDetail) {
         didFetchMovieDetail = true
         fetchedMovieDetail = movieDetail
     }
@@ -54,15 +54,15 @@ final class FilmDetailInteractorTests: XCTestCase {
                 PersonDTO(name: "Robert Downey Jr.", photo: nil)
             ],
             spokenLanguages: nil,
-            similarMovies: nil
+            similarFilms: nil
         )
         let movieImage = UIImage()
         mockNetworkService.fetchMovieResult = .success(movieDTO)
         mockNetworkService.fetchImageResult = .success(movieImage)
 
-        let expectation = self.expectation(description: "fetchMovieDetails")
+        let expectation = self.expectation(description: "fetchFilmDetails")
 
-        interactor.fetchMovieDetails(by: 12345)
+        interactor.fetchFilmDetails(by: 12345)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             expectation.fulfill()
@@ -82,9 +82,9 @@ final class FilmDetailInteractorTests: XCTestCase {
         let error = NSError(domain: "testError", code: 1, userInfo: nil)
         mockNetworkService.fetchMovieResult = .failure(error)
 
-        let expectation = self.expectation(description: "fetchMovieDetails")
+        let expectation = self.expectation(description: "fetchFilmDetails")
 
-        interactor.fetchMovieDetails(by: 12345)
+        interactor.fetchFilmDetails(by: 12345)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             expectation.fulfill()

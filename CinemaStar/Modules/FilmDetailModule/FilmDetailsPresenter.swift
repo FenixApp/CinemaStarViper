@@ -7,8 +7,8 @@ import SwiftData
 
 ///  Протокол для взаимодействия с презентером
 protocol FilmDetailsPresenterProtocol: ObservableObject {
-    func prepareMovieDetails(by id: Int, context: ModelContext)
-    func didFetchMovieDetail(_ movie: FilmDetail)
+    func prepareFilmDetails(by id: Int, context: ModelContext)
+    func didFetchFilmDetail(_ movie: FilmDetail)
 }
 
 /// Презентер для  экрана с детальным фильмом
@@ -21,20 +21,20 @@ class FilmDetailsPresenter: FilmDetailsPresenterProtocol {
     var interactor: FilmDetailsInteractorProtocol?
     var router: FilmDetailsRouterProtocol?
 
-    func prepareMovieDetails(by id: Int, context: ModelContext) {
-        interactor?.fetchMovieDetails(by: id)
+    func prepareFilmDetails(by id: Int, context: ModelContext) {
+        interactor?.fetchFilmDetails(by: id)
         self.context = context
     }
 
-    func didFetchMovieDetail(_ movie: FilmDetail) {
-        state = .data(movie)
-        saveToContext(film: movie)
+    func didFetchFilmDetail(_ film: FilmDetail) {
+        state = .data(film)
+        saveToContext(film: film)
     }
 
     func saveToContext(film: FilmDetail) {
         guard let imageData = film.image?.jpegData(compressionQuality: 0.8),
               let context = context,
-              view?.movieDetail.firstIndex(where: { $0.filmID == film.filmID }) == nil else { return }
+              view?.filmDetail.firstIndex(where: { $0.filmID == film.filmID }) == nil else { return }
         context.insert(SwiftDataFilmDetails(
             filmName: film.filmName,
             filmRating: film.filmRating,

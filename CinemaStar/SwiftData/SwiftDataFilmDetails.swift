@@ -1,8 +1,8 @@
 // SwiftDataFilmDetails.swift
 // Copyright © RoadMap. All rights reserved.
 
-import Foundation
 import SwiftData
+import SwiftUI
 
 @Model
 final class SwiftDataFilmDetails: Identifiable {

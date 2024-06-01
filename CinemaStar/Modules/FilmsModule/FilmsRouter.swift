@@ -11,6 +11,6 @@ protocol FilmsRouterProtocol {
 /// Роутер экрана с фильмами
 class FilmsRouter: FilmsRouterProtocol {
     func navigateToDetailScreen(with presenter: FilmsPresenter, id: Int) {
-        presenter.selectedMovieID = id
+        presenter.selectedFilmID = id
     }
 }
