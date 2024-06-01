@@ -5,7 +5,7 @@ import SwiftUI
 
 /// Представление шиммера
 struct ShimmerBoxView: View {
-    @State private var startPoint: UnitPoint = .init(x: 0, y: 0)
+    @State private var startPoint: UnitPoint = .init(x: -4, y: 0)
     @State private var endPoint: UnitPoint = .init(x: 0, y: 0)
 
     private var gradientColors = [
@@ -26,8 +26,8 @@ struct ShimmerBoxView: View {
                 .linear(duration: 1)
                     .repeatForever(autoreverses: false)
             ) {
-                startPoint = .init(x: 0, y: 0)
-                endPoint = .init(x: 2, y: 0)
+                startPoint = .init(x: 2, y: 0)
+                endPoint = .init(x: 4, y: 0)
             }
         }
     }
