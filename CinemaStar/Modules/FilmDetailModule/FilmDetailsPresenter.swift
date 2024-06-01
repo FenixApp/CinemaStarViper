@@ -28,25 +28,25 @@ class FilmDetailsPresenter: FilmDetailsPresenterProtocol {
 
     func didFetchMovieDetail(_ movie: FilmDetail) {
         state = .data(movie)
-        saveToContext(movie: movie)
+        saveToContext(film: movie)
     }
 
-    func saveToContext(movie: FilmDetail) {
-        guard let imageData = movie.image?.jpegData(compressionQuality: 0.8),
+    func saveToContext(film: FilmDetail) {
+        guard let imageData = film.image?.jpegData(compressionQuality: 0.8),
               let context = context,
-              view?.movieDetail.firstIndex(where: { $0.movieID == movie.filmID }) == nil else { return }
-        context.insert(SwiftDataMovieDetail(
-            movieName: movie.filmName,
-            movieRating: movie.filmRating,
-            imageURL: movie.imageURL,
-            id: movie.filmID,
-            description: movie.description,
-            year: movie.year,
-            country: movie.country,
-            contentType: movie.contentType,
-            actors: movie.actors,
-            language: movie.language,
-            similarMovies: movie.similarFilms,
+              view?.movieDetail.firstIndex(where: { $0.filmID == film.filmID }) == nil else { return }
+        context.insert(SwiftDataFilmDetails(
+            filmName: film.filmName,
+            filmRating: film.filmRating,
+            imageURL: film.imageURL,
+            id: film.filmID,
+            description: film.description,
+            year: film.year,
+            country: film.country,
+            contentType: film.contentType,
+            actors: film.actors,
+            language: film.language,
+            similarFilms: film.similarFilms,
             image: imageData
         ))
     }

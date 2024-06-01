@@ -11,7 +11,7 @@ struct CinemaStarApp: App {
     var body: some Scene {
         WindowGroup {
             Builder.buildFilmsModule()
-                .modelContainer(for: [SwiftDataFilm.self, SwiftDataMovieDetail.self])
+                .modelContainer(for: [SwiftDataFilm.self, SwiftDataFilmDetails.self])
         }
     }
 }

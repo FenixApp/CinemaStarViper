@@ -1,28 +1,28 @@
-// SwiftDataMovieDetail.swift
+// SwiftDataFilmDetails.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
 import SwiftData
 
 @Model
-final class SwiftDataMovieDetail: Identifiable {
-    let movieName: String
-    let movieRating: Double?
+final class SwiftDataFilmDetails: Identifiable {
+    let filmName: String
+    let filmRating: Double?
     let imageURL: String?
-    let movieID: Int
-    let movieDescription: String?
+    let filmID: Int
+    let filmDescription: String?
     let year: Int?
     let country: String?
     let contentType: String?
     var actors: [FilmActor] = []
     let language: String?
-    var similarMovies: [SimilarFilm] = []
+    var similarFilms: [SimilarFilm] = []
     var image: Data?
     var id = UUID()
 
     init(
-        movieName: String,
-        movieRating: Double?,
+        filmName: String,
+        filmRating: Double?,
         imageURL: String?,
         id: Int,
         description: String?,
@@ -31,20 +31,20 @@ final class SwiftDataMovieDetail: Identifiable {
         contentType: String?,
         actors: [FilmActor],
         language: String?,
-        similarMovies: [SimilarFilm],
+        similarFilms: [SimilarFilm],
         image: Data? = nil
     ) {
-        self.movieName = movieName
-        self.movieRating = movieRating
+        self.filmName = filmName
+        self.filmRating = filmRating
         self.imageURL = imageURL
-        movieID = id
-        movieDescription = description
+        filmID = id
+        filmDescription = description
         self.year = year
         self.country = country
         self.contentType = contentType
         self.actors = actors
         self.language = language
-        self.similarMovies = similarMovies
+        self.similarFilms = similarFilms
         self.image = image
     }
 }

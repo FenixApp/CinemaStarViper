@@ -2,7 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import SwiftData
-import UIKit
+import SwiftUI
 
 @Model
 final class SwiftDataFilm {
