@@ -14,7 +14,7 @@ protocol FilmDetailsPresenterProtocol: ObservableObject {
 }
 
 /// Презентер экрана с детальным описанием фильма
-class FilmDetailsPresenter: FilmDetailsPresenterProtocol {
+final class FilmDetailsPresenter: FilmDetailsPresenterProtocol {
     @Published var state: ViewState<FilmDetail> = .loading
     var view: FilmDetailsView?
     var interactor: FilmDetailsInteractorProtocol?

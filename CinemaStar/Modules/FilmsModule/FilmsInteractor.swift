@@ -11,7 +11,7 @@ protocol FilmsInteractorProtocol {
 }
 
 /// Интерактор экрана с фильмами
-class FilmsInteractor: FilmsInteractorProtocol {
+final class FilmsInteractor: FilmsInteractorProtocol {
     var presenter: (any FilmsPresenterProtocol)?
     var networkService: NetworkServiceProtocol?
     var cancellablesSet: Set<AnyCancellable> = []

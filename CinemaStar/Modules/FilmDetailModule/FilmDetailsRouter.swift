@@ -3,8 +3,8 @@
 
 import Foundation
 
-///  Протокол для взаимодействия с роутером
+///  Протокол для роутера
 protocol FilmDetailsRouterProtocol {}
 
-/// Роутер для  экрана с детальным фильмом
-class FilmDetailsRouter: FilmDetailsRouterProtocol {}
+/// Роутер для экрана с детальным описанием фильма
+final class FilmDetailsRouter: FilmDetailsRouterProtocol {}
