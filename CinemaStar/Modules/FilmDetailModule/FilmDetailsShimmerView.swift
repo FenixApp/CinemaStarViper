@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-/// Shimmer
+/// Шиммер для экрана с детальным описанием фильма
 struct FilmDetailsShimmerView: View {
     let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -17,13 +17,13 @@ struct FilmDetailsShimmerView: View {
                     watchButtonView
                     Spacer()
                         .frame(height: 16)
-                    makeCountryProductionView(movie: items)
+                    makeCountryProductionView(film: items)
                     Spacer()
                         .frame(height: 16)
-                    makeStarringView(movie: items)
+                    makeStarringView(film: items)
                     Spacer()
                         .frame(height: 10)
-                    makeRecommendedFilmsView(movie: items)
+                    makeRecommendedFilmsView(film: items)
                 }
             }
             .navigationBarBackButtonHidden(true)
@@ -55,7 +55,7 @@ struct FilmDetailsShimmerView: View {
         .padding(.leading, 18)
     }
 
-    private func makeCountryProductionView(movie: [Int]) -> some View {
+    private func makeCountryProductionView(film: [Int]) -> some View {
         VStack(alignment: .leading) {
             ShimmerView()
                 .frame(width: 355, height: 100)
@@ -71,7 +71,7 @@ struct FilmDetailsShimmerView: View {
         .padding(.horizontal, 15)
     }
 
-    private func makeStarringView(movie: [Int]) -> some View {
+    private func makeStarringView(film: [Int]) -> some View {
         VStack(alignment: .leading) {
             ShimmerView()
                 .frame(width: 355, height: 20)
@@ -109,7 +109,7 @@ struct FilmDetailsShimmerView: View {
         .foregroundColor(.white)
     }
 
-    private func makeRecommendedFilmsView(movie: [Int]) -> some View {
+    private func makeRecommendedFilmsView(film: [Int]) -> some View {
         VStack(alignment: .leading) {
             ShimmerView()
                 .frame(width: 355, height: 15)

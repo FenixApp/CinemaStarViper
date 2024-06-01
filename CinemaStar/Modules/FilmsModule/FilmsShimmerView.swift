@@ -3,10 +3,9 @@
 
 import SwiftUI
 
-/// Shimmer view
+/// Шиммер для экрана с фильмами
 struct FilmsShimmerView: View {
     let items = Array(1 ... 6)
-
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())

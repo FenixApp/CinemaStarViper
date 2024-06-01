@@ -45,6 +45,7 @@
 		C4A371692C0925E500066815 /* SwiftDataFilmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A371682C0925E500066815 /* SwiftDataFilmDetails.swift */; };
 		C4A3716F2C0A4CDD00066815 /* FilmsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A3716E2C0A4CDD00066815 /* FilmsInteractorTests.swift */; };
 		C4A371712C0A4D4A00066815 /* FilmDetailInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A371702C0A4D4A00066815 /* FilmDetailInteractorTests.swift */; };
+		C4A6B49B2C0B8CB300DA394A /* FilmsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6B49A2C0B8CB300DA394A /* FilmsCollectionView.swift */; };
 		C4D971B02BD6EF12002673E1 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D971AF2BD6EF12002673E1 /* Builder.swift */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +109,7 @@
 		C4A371682C0925E500066815 /* SwiftDataFilmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataFilmDetails.swift; sourceTree = "<group>"; };
 		C4A3716E2C0A4CDD00066815 /* FilmsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsInteractorTests.swift; sourceTree = "<group>"; };
 		C4A371702C0A4D4A00066815 /* FilmDetailInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailInteractorTests.swift; sourceTree = "<group>"; };
+		C4A6B49A2C0B8CB300DA394A /* FilmsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmsCollectionView.swift; sourceTree = "<group>"; };
 		C4D971AF2BD6EF12002673E1 /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -219,6 +221,7 @@
 			children = (
 				C4A3715D2C09240700066815 /* FilmsShimmerView.swift */,
 				C4A3713B2C06375D00066815 /* FilmsView.swift */,
+				C4A6B49A2C0B8CB300DA394A /* FilmsCollectionView.swift */,
 				C4A371392C062AEE00066815 /* FilmsPresenter.swift */,
 				C4A371412C0639B500066815 /* FilmsRouter.swift */,
 				C4A3713F2C06397300066815 /* FilmsInteractor.swift */,
@@ -511,6 +514,7 @@
 				C4A371622C09251C00066815 /* SimilarFilm.swift in Sources */,
 				C4A371482C064EF500066815 /* FilmDetailsPresenter.swift in Sources */,
 				C4A3715E2C09240700066815 /* FilmsShimmerView.swift in Sources */,
+				C4A6B49B2C0B8CB300DA394A /* FilmsCollectionView.swift in Sources */,
 				C4A3713E2C0637E600066815 /* View + Extension.swift in Sources */,
 				C42FBC5B2BDAD93A00104129 /* UIView + Extension.swift in Sources */,
 				C4A371642C09253200066815 /* FilmActor.swift in Sources */,
