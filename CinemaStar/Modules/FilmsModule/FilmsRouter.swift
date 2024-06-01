@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Протокол для взаимодействия с роутером
+/// Протокол для роутера
 protocol FilmsRouterProtocol {
     func navigateToDetailScreen(with presenter: FilmsPresenter, id: Int)
 }

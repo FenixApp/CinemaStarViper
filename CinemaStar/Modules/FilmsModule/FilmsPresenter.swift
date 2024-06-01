@@ -3,32 +3,30 @@
 
 import Combine
 import SwiftData
-import UIKit
+import SwiftUI
 
-// swiftlint:disable all
-
-/// Протокол для взаимодействия с презентером
+/// Протокол для презентера
 protocol FilmsPresenterProtocol: ObservableObject {
     /// Передача фильмов с интерактора во вью
-    func didFetchFilms(_ movies: [Film])
-    /// Заявка на получение фильмов с нетворк сервиса
+    func didFetchFilms(_ films: [Film])
+    /// Запрос на получение фильмов с нетворк сервиса
     func prepareFilms(context: ModelContext)
-
+    /// Переход на экран с детальным описанием фильма
     func goToDetailScreen(with id: Int)
 }
 
 /// Презентер экрана с фильмами
-class FilmsPresenter: FilmsPresenterProtocol {
+final class FilmsPresenter: FilmsPresenterProtocol {
     @Published var state: ViewState<[Film]> = .loading
     @Published var selectedFilmID: Int?
-    @Published private var filmsToStore: [SwiftDataFilm] = []
-    private var context: ModelContext?
 
     var cancellable: AnyCancellable?
-
     var view: FilmsView?
     var interactor: FilmsInteractorProtocol?
     var router: FilmsRouterProtocol?
+
+    @Published private var filmsToStore: [SwiftDataFilm] = []
+    private var context: ModelContext?
 
     func didFetchFilms(_ films: [Film]) {
         state = .data(films)
@@ -66,5 +64,3 @@ class FilmsPresenter: FilmsPresenterProtocol {
             }
     }
 }
-
-// swiftlint:enable all

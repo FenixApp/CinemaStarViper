@@ -5,21 +5,22 @@ import Combine
 import Foundation
 import SwiftData
 
-///  Протокол для взаимодействия с презентером
+///  Протокол для презентера
 protocol FilmDetailsPresenterProtocol: ObservableObject {
+    /// Запрос на получение описания фильма с нетворк сервиса
     func prepareFilmDetails(by id: Int, context: ModelContext)
-    func didFetchFilmDetail(_ movie: FilmDetail)
+    /// Передача описания фильма с интерактора во вью
+    func didFetchFilmDetail(_ film: FilmDetail)
 }
 
-/// Презентер для  экрана с детальным фильмом
+/// Презентер экрана с детальным описанием фильма
 class FilmDetailsPresenter: FilmDetailsPresenterProtocol {
     @Published var state: ViewState<FilmDetail> = .loading
-//    private var movieDetail = PassthroughSubject<SwiftDataMovieDetail, Never>()
-    private var context: ModelContext?
-
     var view: FilmDetailsView?
     var interactor: FilmDetailsInteractorProtocol?
     var router: FilmDetailsRouterProtocol?
+
+    private var context: ModelContext?
 
     func prepareFilmDetails(by id: Int, context: ModelContext) {
         interactor?.fetchFilmDetails(by: id)

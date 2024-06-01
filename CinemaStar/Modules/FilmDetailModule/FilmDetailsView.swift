@@ -4,52 +4,47 @@
 import SwiftData
 import SwiftUI
 
-// swiftlint:disable all
-
-/// Вью экрана с детальным фильмом
+/// Вью экрана с детальным описанием фильма
 struct FilmDetailsView: View {
-    @Environment(\.modelContext) private var context: ModelContext
-    @Query var filmDetail: [SwiftDataFilmDetails]
+    enum Constant {
+        static let error = "Error"
+        static let watch = "Смотреть"
+        static let ups = "Упс!"
+        static let inDeveloping = "Функционал в разработке"
+        static let okText = "Ок"
+        static let chevronBackward = "chevron.backward"
+        static let addToFavorites = "add to favorites"
+        static let heartFill = "heart.fill"
+        static let heart = "heart"
+        static let format = "%.1f"
+        static let actors = "Актеры и съемочная группа"
+        static let language = "Язык"
+        static let noText = ""
+        static let seeAlso = "Смотрите также"
+        static let trait = "-"
+    }
+
     @Environment(\.dismiss) var dismiss
+    @StateObject var presenter: FilmDetailsPresenter
     @State var isfavoritesTapped = false
     @State var isWatchButtonTapped = false
-    @StateObject var presenter: FilmDetailsPresenter
+    @Query var filmDetail: [SwiftDataFilmDetails]
 
     var id: Int?
 
     var body: some View {
         backgroundStackView(color: gradientColor) {
-            ScrollView(showsIndicators: false) {
-                switch presenter.state {
-                case .loading:
-                    FilmDetailsShimmerView()
-                case let .data(movieDetail):
-                    let storedFilm = filmDetail.first(where: { $0.filmID == id })
-                    VStack {
-                        makeFilmPosterView(film: movieDetail, storedFilm: storedFilm)
-                        Spacer().frame(height: 16)
-                        watchButtonView
-                        Spacer().frame(height: 16)
-                        makeCountryProductionView(film: movieDetail, storedFilm: storedFilm)
-                        Spacer().frame(height: 16)
-                        makeStarringView(film: movieDetail, storedFilm: storedFilm)
-                        Spacer().frame(height: 10)
-                        makeRecommendedFilmsView(film: movieDetail, storedFilm: storedFilm)
+            scrollView
+                .toolbarBackground(gradientColor, for: .navigationBar)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        backButtonView
                     }
-                case .error:
-                    Text("ERROR!!!")
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        addToFavoritesButtonView
+                    }
                 }
-            }
-            .toolbarBackground(gradientColor, for: .navigationBar)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    backButtonView
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    addToFavoritesButtonView
-                }
-            }
         }
         .onAppear {
             guard case .loading = presenter.state else { return }
@@ -61,11 +56,37 @@ struct FilmDetailsView: View {
         }
     }
 
+    @Environment(\.modelContext) private var context: ModelContext
+
+    private var scrollView: some View {
+        ScrollView(showsIndicators: false) {
+            switch presenter.state {
+            case .loading:
+                FilmDetailsShimmerView()
+            case let .data(movieDetail):
+                let storedFilm = filmDetail.first(where: { $0.filmID == id })
+                VStack {
+                    makeFilmPosterView(film: movieDetail, storedFilm: storedFilm)
+                    Spacer().frame(height: 16)
+                    watchButtonView
+                    Spacer().frame(height: 16)
+                    makeCountryProductionView(film: movieDetail, storedFilm: storedFilm)
+                    Spacer().frame(height: 16)
+                    makeStarringView(film: movieDetail, storedFilm: storedFilm)
+                    Spacer().frame(height: 10)
+                    makeRecommendedFilmsView(film: movieDetail, storedFilm: storedFilm)
+                }
+            case .error:
+                Text(Constant.error)
+            }
+        }
+    }
+
     private var watchButtonView: some View {
         Button {
             isWatchButtonTapped.toggle()
         } label: {
-            Text("Смотреть")
+            Text(Constant.watch)
                 .frame(maxWidth: .infinity)
         }
         .foregroundColor(.white)
@@ -73,31 +94,35 @@ struct FilmDetailsView: View {
         .background(.gradientSecond)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .alert(isPresented: $isWatchButtonTapped, content: {
-            Alert(title: Text("Упс!"), message: Text("Функционал в разработке :("), dismissButton: .default(Text("Ок")))
+            Alert(
+                title: Text(Constant.ups),
+                message: Text(Constant.inDeveloping),
+                dismissButton: .default(Text(Constant.okText))
+            )
         })
-    }
-
-    private var gradientColor: LinearGradient {
-        LinearGradient(colors: [.gradientFirst, .gradientSecond], startPoint: .top, endPoint: .bottom)
     }
 
     private var backButtonView: some View {
         Button {
             dismiss()
         } label: {
-            Image(systemName: "chevron.backward")
+            Image(systemName: Constant.chevronBackward)
         }
         .foregroundColor(.white)
     }
 
     private var addToFavoritesButtonView: some View {
         Button {
-            print("add to favorites")
+            print(Constant.addToFavorites)
             isfavoritesTapped.toggle()
         } label: {
-            Image(systemName: isfavoritesTapped ? "heart.fill" : "heart")
+            Image(systemName: isfavoritesTapped ? Constant.heartFill : Constant.heart)
         }
         .foregroundColor(.white)
+    }
+
+    private var gradientColor: LinearGradient {
+        LinearGradient(colors: [.gradientFirst, .gradientSecond], startPoint: .top, endPoint: .bottom)
     }
 
     init(presenter: FilmDetailsPresenter) {
@@ -121,7 +146,7 @@ struct FilmDetailsView: View {
                     .frame(width: 150, alignment: .leading)
                     .lineLimit(5)
                     .bold()
-                Text("⭐️ \(String(format: "%.1f", storedFilm?.filmRating ?? film.filmRating ?? 0.0))")
+                Text("⭐️ \(String(format: Constant.format, storedFilm?.filmRating ?? film.filmRating ?? 0.0))")
             }
             .foregroundColor(.white)
             .frame(width: 170, height: 70, alignment: .leading)
@@ -132,13 +157,14 @@ struct FilmDetailsView: View {
 
     private func makeCountryProductionView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         VStack(alignment: .leading) {
-            Text(storedFilm?.filmDescription ?? film.description ?? "")
+            Text(storedFilm?.filmDescription ?? film.description ?? Constant.noText)
                 .font(.system(size: 14))
                 .lineLimit(5)
                 .foregroundColor(.white)
             Spacer()
+            // swiftlint:disable all
             Text(
-                "\(String(storedFilm?.year ?? film.year ?? 0)) / \(storedFilm?.country ?? film.country ?? "") / \(storedFilm?.contentType ?? film.contentType ?? "")"
+                "\(String(storedFilm?.year ?? film.year ?? 0)) / \(storedFilm?.country ?? film.country ?? Constant.noText) / \(storedFilm?.contentType ?? film.contentType ?? Constant.noText)"
             )
             .font(.system(size: 14))
             .foregroundColor(.descriptionText)
@@ -148,7 +174,7 @@ struct FilmDetailsView: View {
 
     private func makeStarringView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         VStack(alignment: .leading) {
-            Text("Актеры и съемочная группа")
+            Text(Constant.actors)
                 .fontWeight(.medium)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
@@ -169,6 +195,7 @@ struct FilmDetailsView: View {
                                     .font(.system(size: 8))
                                     .multilineTextAlignment(.center)
                                     .frame(width: 60, height: 24)
+                                // swiftlint:enable all
                             }
                         }
                     } else {
@@ -196,8 +223,8 @@ struct FilmDetailsView: View {
             Spacer()
                 .frame(height: 14)
             VStack(alignment: .leading, spacing: 5) {
-                Text("Язык")
-                Text(storedFilm?.language ?? film.language ?? "")
+                Text(Constant.language)
+                Text(storedFilm?.language ?? film.language ?? Constant.noText)
                     .foregroundColor(.descriptionText)
             }
             .font(.system(size: 14))
@@ -208,7 +235,7 @@ struct FilmDetailsView: View {
 
     private func makeRecommendedFilmsView(film: FilmDetail, storedFilm: SwiftDataFilmDetails? = nil) -> some View {
         VStack(alignment: .leading) {
-            Text("Смотрите также")
+            Text(Constant.seeAlso)
                 .font(.system(size: 14))
                 .fontWeight(.medium)
             Spacer()
@@ -218,7 +245,7 @@ struct FilmDetailsView: View {
                     let similarFilms = storedFilm?.similarFilms ?? film.similarFilms
                     ForEach(similarFilms, id: \.id) { film in
                         VStack(alignment: .leading, spacing: 8) {
-                            if let url = URL(string: film.imageUrl ?? "") {
+                            if let url = URL(string: film.imageUrl ?? Constant.noText) {
                                 AsyncImage(url: url) { image in
                                     image
                                         .resizable()
@@ -229,7 +256,7 @@ struct FilmDetailsView: View {
                                         .frame(width: 170, height: 220)
                                 }
                             }
-                            Text(film.filmName ?? "???")
+                            Text(film.filmName ?? Constant.trait)
                                 .font(.system(size: 16))
                                 .frame(width: 170, height: 18, alignment: .leading)
                         }
@@ -246,5 +273,3 @@ struct FilmDetailsView: View {
 #Preview {
     FilmDetailsView(presenter: FilmDetailsPresenter())
 }
-
-// swiftlint:enable all

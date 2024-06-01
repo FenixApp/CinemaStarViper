@@ -5,7 +5,7 @@ import Combine
 import SwiftData
 import SwiftUI
 
-/// Протокол для взаимодействия с интерактором
+/// Протокол для интерактора
 protocol FilmsInteractorProtocol {
     func fetchFilms()
 }
@@ -14,7 +14,6 @@ protocol FilmsInteractorProtocol {
 class FilmsInteractor: FilmsInteractorProtocol {
     var presenter: (any FilmsPresenterProtocol)?
     var networkService: NetworkServiceProtocol?
-
     var cancellablesSet: Set<AnyCancellable> = []
 
     func fetchFilms() {

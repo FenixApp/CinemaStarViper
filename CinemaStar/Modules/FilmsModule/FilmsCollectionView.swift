@@ -5,7 +5,7 @@ import Combine
 import SwiftData
 import SwiftUI
 
-/// Вью с фильмами
+/// Вью с коллекцией фильмов
 struct FilmsCollectionView: View {
     enum Constant {
         static let logoText = "Смотри исторические\nфильмы на "

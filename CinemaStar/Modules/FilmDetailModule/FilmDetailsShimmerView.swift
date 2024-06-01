@@ -9,24 +9,28 @@ struct FilmDetailsShimmerView: View {
 
     var body: some View {
         backgroundStackView(color: gradientColor) {
-            ScrollView(showsIndicators: false) {
-                VStack {
-                    makeFilmPosterView(film: items)
-                    Spacer()
-                        .frame(height: 16)
-                    watchButtonView
-                    Spacer()
-                        .frame(height: 16)
-                    makeCountryProductionView(film: items)
-                    Spacer()
-                        .frame(height: 16)
-                    makeStarringView(film: items)
-                    Spacer()
-                        .frame(height: 10)
-                    makeRecommendedFilmsView(film: items)
-                }
+            scrollView
+                .navigationBarBackButtonHidden(true)
+        }
+    }
+
+    private var scrollView: some View {
+        ScrollView(showsIndicators: false) {
+            VStack {
+                makeFilmPosterView(film: items)
+                Spacer()
+                    .frame(height: 16)
+                watchButtonView
+                Spacer()
+                    .frame(height: 16)
+                makeCountryProductionView(film: items)
+                Spacer()
+                    .frame(height: 16)
+                makeStarringView(film: items)
+                Spacer()
+                    .frame(height: 10)
+                makeRecommendedFilmsView(film: items)
             }
-            .navigationBarBackButtonHidden(true)
         }
     }
 
