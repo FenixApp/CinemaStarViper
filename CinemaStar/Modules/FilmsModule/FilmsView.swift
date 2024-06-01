@@ -24,39 +24,38 @@ struct FilmsView: View {
     }
 
     private var switchStateView: some View {
-        VStack {
-            switch presenter.state {
-            case .loading:
-                FilmsShimmerView()
-            case let .data(fetchedFilms):
-                if fetchedFilms.isEmpty {
-                    FilmsCollectionView(swiftDataFilms: swiftDataStoredFilms)
-                } else {
-                    FilmsCollectionView(films: fetchedFilms)
+        NavigationStack {
+            VStack {
+                switch presenter.state {
+                case .loading:
+                    FilmsShimmerView()
+                case let .data(fetchedFilms):
+                    if fetchedFilms.isEmpty {
+                        FilmsCollectionView(swiftDataFilms: swiftDataStoredFilms)
+                    } else {
+                        FilmsCollectionView(films: fetchedFilms)
+                    }
+                case .error:
+                    Text(Constant.error)
                 }
-            case .error:
-                Text(Constant.error)
             }
-        }
-        .environmentObject(presenter)
-        .background(
-            NavigationLink(
-                destination:
-                Builder.buildFilmDetailsModule(id: presenter.selectedFilmID ?? 0),
-                isActive: Binding(
+            .environmentObject(presenter)
+            .navigationDestination(
+                isPresented: Binding(
                     get: { presenter.selectedFilmID != nil },
                     set: { if !$0 { presenter.selectedFilmID = nil } }
-                )
-            ) {
-                EmptyView()
-            }
-        )
-        .onAppear {
-            guard case .loading = presenter.state else { return }
-            if swiftDataStoredFilms.isEmpty {
-                presenter.prepareFilms(context: context)
-            } else {
-                presenter.state = .data([])
+                ),
+                destination: {
+                    Builder.buildFilmDetailsModule(id: presenter.selectedFilmID ?? 0)
+                }
+            )
+            .onAppear {
+                guard case .loading = presenter.state else { return }
+                if swiftDataStoredFilms.isEmpty {
+                    presenter.prepareFilms(context: context)
+                } else {
+                    presenter.state = .data([])
+                }
             }
         }
     }
