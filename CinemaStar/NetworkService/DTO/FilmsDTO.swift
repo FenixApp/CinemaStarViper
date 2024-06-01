@@ -3,16 +3,16 @@
 
 import Foundation
 
-/// Массив фильмов
+/// Массив с фильмами
 struct FilmsDTO: Codable {
     let docs: [FilmDTO]
 }
 
 /// Фильм
 struct FilmDTO: Codable {
-    /// Имя фильма
+    /// Наименование фильма
     let name: String
-    /// ID фильма
+    /// Идентификатор фильма
     let id: Int
     /// ДТО-модель с ссылкой на картинку постера
     let poster: PosterDTO
@@ -22,15 +22,15 @@ struct FilmDTO: Codable {
     let description: String?
     /// Год выпуска
     let year: Int?
-    /// Страны
+    /// ДТО-модель со странами
     let countries: [CountriesDTO]?
-    /// Тип контента
+    /// Фильм/сериал
     let type: String?
-    /// Актеры
+    /// ДТО-модель с актерами
     let persons: [PersonDTO]?
-    /// Языки
+    /// ДТО-модель с международными языками
     let spokenLanguages: [SpokenLanguagesDTO]?
-    /// Похожие фильмы
+    /// ДТО-модель рекомендуемых фильмов
     let similarFilms: [FilmDTO]?
 }
 

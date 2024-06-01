@@ -3,20 +3,33 @@
 
 import SwiftUI
 
-/// Детали фильма
+/// Детальное описание фильма
 struct FilmDetail: Identifiable {
+    /// Название фильма
     let filmName: String
+    /// Рейтинг
     let filmRating: Double?
+    /// Ссылка на изображение
     let imageURL: String?
+    /// Идентификатор
     let filmID: Int
+    /// Описание
     let description: String?
+    /// Год выхода
     let year: Int?
+    /// Страна производства
     let country: String?
+    /// Фильм/сериал
     let contentType: String?
+    /// Актеры
     var actors: [FilmActor] = []
+    /// Язык фильма
     let language: String?
+    /// Рекомендуемые фильмы
     var similarFilms: [SimilarFilm] = []
+    /// Картинка
     var image: UIImage?
+    /// Идентификатор
     var id = UUID()
 
     init(dto: FilmDTO) {

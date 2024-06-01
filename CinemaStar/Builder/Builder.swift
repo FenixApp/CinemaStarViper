@@ -3,8 +3,9 @@
 
 import SwiftUI
 
-/// Билдер приложения
+/// Сборщик модулей
 final class Builder {
+    /// Сборка экрана с фильмами
     static func buildFilmsModule() -> some View {
         let presenter = FilmsPresenter()
         let interactor = FilmsInteractor()
@@ -21,6 +22,7 @@ final class Builder {
         return view
     }
 
+    /// Сборка экрана с детальным описанием фильма
     static func buildFilmDetailsModule(id: Int) -> some View {
         let interactor = FilmDetailsInteractor()
         let presenter = FilmDetailsPresenter()

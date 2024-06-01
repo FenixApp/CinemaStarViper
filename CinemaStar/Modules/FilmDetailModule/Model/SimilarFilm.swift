@@ -3,12 +3,17 @@
 
 import Foundation
 
-/// Похожий фильм
+/// Рекомендуемый фильм
 struct SimilarFilm: Identifiable, Codable {
+    /// Ссылка на картинку
     let imageUrl: String?
+    /// Название
     let filmName: String?
+    /// Рейтинг
     let rating: Double?
+    /// Идентификатор
     let id: Int
+    /// Изображение
     var image: Data?
 
     init(dto: FilmDTO) {
