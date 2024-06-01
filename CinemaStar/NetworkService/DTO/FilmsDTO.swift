@@ -3,43 +3,13 @@
 
 import Foundation
 
-/// Список фильмов
-struct FilmListDTO: Codable {
-    /// Фильмы
-    let docs: [FilmDocDTO]
-}
-
-/// Фильм
-struct FilmDocDTO: Codable {
-    /// Номер (идентификатор фильма)
-    let id: Int
-    /// Название фильма
-    let name: String
-    /// Изображение фильма
-    let poster: PosterDTO
-    /// Рейтинг фильма
-    let rating: RatingDTO
-}
-
-///// Изображение фильма
-// struct PosterDTO: Codable {
-//    /// Ссылка на изображение
-//    let url: URL
-// }
-
-///// Рейтинг фильма
-// struct RatingDTO: Codable {
-//    /// Рейтинг
-//    let kp: Double
-// }
-
 /// Массив фильмов
-struct MoviesDTO: Codable {
-    let docs: [MovieDTO]
+struct FilmsDTO: Codable {
+    let docs: [FilmDTO]
 }
 
 /// Фильм
-struct MovieDTO: Codable {
+struct FilmDTO: Codable {
     /// Имя фильма
     let name: String
     /// ID фильма
@@ -61,7 +31,7 @@ struct MovieDTO: Codable {
     /// Языки
     let spokenLanguages: [SpokenLanguagesDTO]?
     /// Похожие фильмы
-    let similarMovies: [MovieDTO]?
+    let similarFilms: [FilmDTO]?
 }
 
 /// Картинка фильма

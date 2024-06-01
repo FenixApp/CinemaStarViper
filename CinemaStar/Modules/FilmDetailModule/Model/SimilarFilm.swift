@@ -1,15 +1,15 @@
-// Film.swift
+// SimilarFilm.swift
 // Copyright © RoadMap. All rights reserved.
 
-import SwiftUI
+import Foundation
 
-/// Модель фильма
-struct Film {
+/// Похожий фильм
+struct SimilarFilm: Identifiable, Codable {
     let imageUrl: String?
     let filmName: String?
     let rating: Double?
     let id: Int
-    var image: UIImage?
+    var image: Data?
 
     init(dto: FilmDTO) {
         imageUrl = dto.poster.url

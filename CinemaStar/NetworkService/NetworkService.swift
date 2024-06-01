@@ -2,24 +2,24 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
-import UIKit
+import SwiftUI
 
 /// Протокол для взаимодействия с нетворк сервисом
 protocol NetworkServiceProtocol {
-    func fetchMovies() -> AnyPublisher<MoviesDTO, Error>
-    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Never>
-    func fetchMovie(by id: Int) -> AnyPublisher<MovieDTO, Error>
+    func fetchFilms() -> AnyPublisher<FilmsDTO, Error>
+    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error>
+    func fetchFilm(by id: Int) -> AnyPublisher<FilmDTO, Error>
 }
 
 /// Нетворк сервис
 class NetworkService: NetworkServiceProtocol {
     enum Constants {
         static let baseUrl = "https://api.kinopoisk.dev/v1.4/movie/"
-        static let moviesUrl = "https://api.kinopoisk.dev/v1.4/movie/search?query=история"
+        static let filmsUrl = "https://api.kinopoisk.dev/v1.4/movie/search?query=история"
     }
 
-    func fetchMovies() -> AnyPublisher<MoviesDTO, any Error> {
-        guard let url = URL(string: Constants.moviesUrl) else {
+    func fetchFilms() -> AnyPublisher<FilmsDTO, Error> {
+        guard let url = URL(string: Constants.filmsUrl) else {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()
         }
@@ -29,11 +29,11 @@ class NetworkService: NetworkServiceProtocol {
 
         return URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)
-            .decode(type: MoviesDTO.self, decoder: JSONDecoder())
+            .decode(type: FilmsDTO.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
 
-    func fetchMovie(by id: Int) -> AnyPublisher<MovieDTO, any Error> {
+    func fetchFilm(by id: Int) -> AnyPublisher<FilmDTO, Error> {
         guard let url = URL(string: "\(Constants.baseUrl)" + "\(id)") else {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()
@@ -44,14 +44,14 @@ class NetworkService: NetworkServiceProtocol {
 
         return URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)
-            .decode(type: MovieDTO.self, decoder: JSONDecoder())
+            .decode(type: FilmDTO.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
 
-    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Never> {
+    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error> {
         URLSession.shared.dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
-            .replaceError(with: nil)
+            .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
 }
