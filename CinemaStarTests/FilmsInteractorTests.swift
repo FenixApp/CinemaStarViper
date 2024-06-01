@@ -9,46 +9,46 @@ import XCTest
 // Mock NetworkService
 class MockNetworkService: NetworkServiceProtocol {
     func fetchFilm(by id: Int) -> AnyPublisher<CinemaStar.FilmDTO, any Error> {
-        fetchMovieResult.publisher.eraseToAnyPublisher()
+        fetchFilmResult.publisher.eraseToAnyPublisher()
     }
 
     func fetchFilms() -> AnyPublisher<FilmsDTO, any Error> {
-        fetchMoviesResult.publisher.eraseToAnyPublisher()
+        fetchFilmsResult.publisher.eraseToAnyPublisher()
     }
 
     func fetchImage(from url: URL) -> AnyPublisher<UIImage?, any Error> {
         fetchImageResult.publisher.eraseToAnyPublisher()
     }
 
-    var fetchMovieResult: Result<FilmDTO, Error>!
-    var fetchMoviesResult: Result<FilmsDTO, Error>!
+    var fetchFilmsResult: Result<FilmsDTO, Error>!
+    var fetchFilmResult: Result<FilmDTO, Error>!
     var fetchImageResult: Result<UIImage?, Error>!
 }
 
 // Mock Presenter
-class MockMoviesPresenter: FilmsPresenterProtocol {
+class MockFilmsPresenter: FilmsPresenterProtocol {
     func prepareFilms(context: ModelContext) {}
     func goToDetailScreen(with id: Int) {}
 
-    var didFetchMovies = false
-    var fetchedMovies: [Film]?
+    var didFetchFilms = false
+    var fetchedFilms: [Film]?
 
-    func didFetchFilms(_ movies: [Film]) {
-        didFetchMovies = true
-        fetchedMovies = movies
+    func didFetchFilms(_ films: [Film]) {
+        didFetchFilms = true
+        fetchedFilms = films
     }
 }
 
 final class FilmsInteractorTests: XCTestCase {
     var interactor: FilmsInteractor!
     var mockNetworkService: MockNetworkService!
-    var mockPresenter: MockMoviesPresenter!
+    var mockPresenter: MockFilmsPresenter!
 
     override func setUp() {
         super.setUp()
         interactor = FilmsInteractor()
         mockNetworkService = MockNetworkService()
-        mockPresenter = MockMoviesPresenter()
+        mockPresenter = MockFilmsPresenter()
         interactor.networkService = mockNetworkService
         interactor.presenter = mockPresenter
     }
@@ -60,15 +60,13 @@ final class FilmsInteractorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testFetchMoviesSuccess() {
-        let moviesDTO = FilmsDTO(docs: [
+    func testFetchFilmsSuccess() {
+        let filmsDTO = FilmsDTO(docs: [
             FilmDTO(
                 name: "Avengers",
-
                 id: 12345,
                 poster: PosterDTO(url: "qwewqeqeq"),
                 rating: RatingDTO(kp: 10),
-
                 description: "Marvel Avengers",
                 year: 2012,
                 countries: nil,
@@ -79,7 +77,6 @@ final class FilmsInteractorTests: XCTestCase {
             ),
             FilmDTO(
                 name: "Batman",
-
                 id: 54321,
                 poster: PosterDTO(url: "erwrqwt"),
                 rating: RatingDTO(kp: 9.9),
@@ -93,10 +90,10 @@ final class FilmsInteractorTests: XCTestCase {
             )
         ])
         let image = UIImage()
-        mockNetworkService.fetchMoviesResult = .success(moviesDTO)
+        mockNetworkService.fetchFilmsResult = .success(filmsDTO)
         mockNetworkService.fetchImageResult = .success(image)
 
-        let expectation = self.expectation(description: "fetchMovies")
+        let expectation = self.expectation(description: "fetchFilms")
 
         interactor.fetchFilms()
 
@@ -106,18 +103,18 @@ final class FilmsInteractorTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertTrue(mockPresenter.didFetchMovies)
-        XCTAssertEqual(mockPresenter.fetchedMovies?.count, 2)
-        XCTAssertEqual(mockPresenter.fetchedMovies?.first?.filmName, "Avengers")
-        XCTAssertEqual(mockPresenter.fetchedMovies?.last?.filmName, "Batman")
-        XCTAssertEqual(mockPresenter.fetchedMovies?.last?.image, image)
+        XCTAssertTrue(mockPresenter.didFetchFilms)
+        XCTAssertEqual(mockPresenter.fetchedFilms?.count, 2)
+        XCTAssertEqual(mockPresenter.fetchedFilms?.first?.filmName, "Avengers")
+        XCTAssertEqual(mockPresenter.fetchedFilms?.last?.filmName, "Batman")
+        XCTAssertEqual(mockPresenter.fetchedFilms?.last?.image, image)
     }
 
-    func testFetchMoviesFailure() {
+    func testFetchFilmsFailure() {
         let error = NSError(domain: "testError", code: 1, userInfo: nil)
-        mockNetworkService.fetchMoviesResult = .failure(error)
+        mockNetworkService.fetchFilmsResult = .failure(error)
 
-        let expectation = self.expectation(description: "fetchMovies")
+        let expectation = self.expectation(description: "fetchFilms")
 
         interactor.fetchFilms()
 
@@ -127,6 +124,6 @@ final class FilmsInteractorTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertFalse(mockPresenter.didFetchMovies)
+        XCTAssertFalse(mockPresenter.didFetchFilms)
     }
 }

@@ -10,12 +10,12 @@ import XCTest
 class MockFilmDetailPresenter: FilmDetailsPresenterProtocol {
     func prepareFilmDetails(by id: Int, context: ModelContext) {}
 
-    var didFetchMovieDetail = false
-    var fetchedMovieDetail: FilmDetail?
+    var didFetchFilmDetail = false
+    var fetchedFilmDetail: FilmDetail?
 
-    func didFetchFilmDetail(_ movieDetail: FilmDetail) {
-        didFetchMovieDetail = true
-        fetchedMovieDetail = movieDetail
+    func didFetchFilmDetail(_ filmDetail: FilmDetail) {
+        didFetchFilmDetail = true
+        fetchedFilmDetail = filmDetail
     }
 }
 
@@ -40,8 +40,8 @@ final class FilmDetailInteractorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testFetchMovieDetailsSuccess() {
-        let movieDTO = FilmDTO(
+    func testFetchFilmDetailsSuccess() {
+        let filmDTO = FilmDTO(
             name: "Avengers",
             id: 12345,
             poster: PosterDTO(url: "https://marvel.com/avengers.jpg"),
@@ -56,9 +56,9 @@ final class FilmDetailInteractorTests: XCTestCase {
             spokenLanguages: nil,
             similarFilms: nil
         )
-        let movieImage = UIImage()
-        mockNetworkService.fetchMovieResult = .success(movieDTO)
-        mockNetworkService.fetchImageResult = .success(movieImage)
+        let filmImage = UIImage()
+        mockNetworkService.fetchFilmResult = .success(filmDTO)
+        mockNetworkService.fetchImageResult = .success(filmImage)
 
         let expectation = self.expectation(description: "fetchFilmDetails")
 
@@ -70,17 +70,17 @@ final class FilmDetailInteractorTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertTrue(mockPresenter.didFetchMovieDetail)
-        XCTAssertEqual(mockPresenter.fetchedMovieDetail?.year, 2012)
-        XCTAssertEqual(mockPresenter.fetchedMovieDetail?.filmName, "Avengers")
-        XCTAssertEqual(mockPresenter.fetchedMovieDetail?.image, movieImage)
-        XCTAssertEqual(mockPresenter.fetchedMovieDetail?.filmRating, 10)
-        XCTAssertEqual(mockPresenter.fetchedMovieDetail?.actors.first?.name, "Robert Downey Jr.")
+        XCTAssertTrue(mockPresenter.didFetchFilmDetail)
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.year, 2012)
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.filmName, "Avengers")
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.image, filmImage)
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.filmRating, 10)
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.actors.first?.name, "Robert Downey Jr.")
     }
 
-    func testFetchMovieDetailsFailure() {
+    func testFetchFilmDetailsFailure() {
         let error = NSError(domain: "testError", code: 1, userInfo: nil)
-        mockNetworkService.fetchMovieResult = .failure(error)
+        mockNetworkService.fetchFilmResult = .failure(error)
 
         let expectation = self.expectation(description: "fetchFilmDetails")
 
@@ -92,6 +92,6 @@ final class FilmDetailInteractorTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
 
-        XCTAssertFalse(mockPresenter.didFetchMovieDetail)
+        XCTAssertFalse(mockPresenter.didFetchFilmDetail)
     }
 }

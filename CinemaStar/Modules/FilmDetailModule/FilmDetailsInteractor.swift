@@ -26,10 +26,10 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
                 case let .failure(error):
                     print("Failed to fetch users: \(error.localizedDescription)")
                 }
-            }, receiveValue: { [unowned self] movieDTO in
-                var movieDetail = FilmDetail(dto: movieDTO)
-                var actors: [FilmActor] = movieDetail.actors
-                if let url = URL(string: movieDetail.imageURL ?? "") {
+            }, receiveValue: { [unowned self] filmDTO in
+                var filmDetail = FilmDetail(dto: filmDTO)
+                var actors: [FilmActor] = filmDetail.actors
+                if let url = URL(string: filmDetail.imageURL ?? "") {
                     networkService?.fetchImage(from: url)
                         .receive(on: DispatchQueue.main)
                         .sink { completion in
@@ -40,7 +40,7 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
                                 print("Failed to fetch users: \(error.localizedDescription)")
                             }
                         } receiveValue: { [unowned self] image in
-                            movieDetail.image = image
+                            filmDetail.image = image
                             let group = DispatchGroup()
 
                             for (index, actor) in actors.enumerated() {
@@ -59,8 +59,8 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
                             }
 
                             group.notify(queue: .main) {
-                                movieDetail.actors = actors
-                                self.presenter?.didFetchFilmDetail(movieDetail)
+                                filmDetail.actors = actors
+                                self.presenter?.didFetchFilmDetail(filmDetail)
                             }
                         }
                         .store(in: &cancellablesSet)
