@@ -8,12 +8,12 @@ import SwiftData
 ///  Протокол для взаимодействия с презентером
 protocol MoviesDetailPresenterProtocol: ObservableObject {
     func prepareMovieDetails(by id: Int, context: ModelContext)
-    func didFetchMovieDetail(_ movie: MovieDetail)
+    func didFetchMovieDetail(_ movie: FilmDetail)
 }
 
 /// Презентер для  экрана с детальным фильмом
 class MoviesDetailPresenter: MoviesDetailPresenterProtocol {
-    @Published var state: ViewState<MovieDetail> = .loading
+    @Published var state: ViewState<FilmDetail> = .loading
 //    private var movieDetail = PassthroughSubject<SwiftDataMovieDetail, Never>()
     private var context: ModelContext?
 
@@ -26,27 +26,27 @@ class MoviesDetailPresenter: MoviesDetailPresenterProtocol {
         self.context = context
     }
 
-    func didFetchMovieDetail(_ movie: MovieDetail) {
+    func didFetchMovieDetail(_ movie: FilmDetail) {
         state = .data(movie)
         saveToContext(movie: movie)
     }
 
-    func saveToContext(movie: MovieDetail) {
+    func saveToContext(movie: FilmDetail) {
         guard let imageData = movie.image?.jpegData(compressionQuality: 0.8),
               let context = context,
-              view?.movieDetail.firstIndex(where: { $0.movieID == movie.movieID }) == nil else { return }
+              view?.movieDetail.firstIndex(where: { $0.movieID == movie.filmID }) == nil else { return }
         context.insert(SwiftDataMovieDetail(
-            movieName: movie.movieName,
-            movieRating: movie.movieRating,
+            movieName: movie.filmName,
+            movieRating: movie.filmRating,
             imageURL: movie.imageURL,
-            id: movie.movieID,
+            id: movie.filmID,
             description: movie.description,
             year: movie.year,
             country: movie.country,
             contentType: movie.contentType,
             actors: movie.actors,
             language: movie.language,
-            similarMovies: movie.similarMovies,
+            similarMovies: movie.similarFilms,
             image: imageData
         ))
     }

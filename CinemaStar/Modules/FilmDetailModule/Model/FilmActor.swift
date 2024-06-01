@@ -1,10 +1,10 @@
-// MovieActor.swift
+// FilmActor.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
 /// Информация об актере
-struct MovieActor: Identifiable, Codable {
+struct FilmActor: Identifiable, Codable {
     var id = UUID()
     /// Имя актера
     let name: String

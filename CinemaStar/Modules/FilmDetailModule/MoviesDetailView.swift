@@ -56,7 +56,7 @@ struct MoviesDetailView: View {
             if movieDetail.first(where: { $0.movieID == self.id }) == nil {
                 presenter.prepareMovieDetails(by: id ?? 0, context: context)
             } else {
-                presenter.state = .data(MovieDetail())
+                presenter.state = .data(FilmDetail())
             }
         }
     }
@@ -104,7 +104,7 @@ struct MoviesDetailView: View {
         _presenter = StateObject(wrappedValue: presenter)
     }
 
-    private func makeMoviePosterView(movie: MovieDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
+    private func makeMoviePosterView(movie: FilmDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
         HStack {
             if let image = storedMovie?.image.flatMap(UIImage.init(data:)) ?? movie.image {
                 Image(uiImage: image)
@@ -116,12 +116,12 @@ struct MoviesDetailView: View {
                     .frame(width: 170, height: 200)
             }
             VStack(alignment: .leading) {
-                Text(storedMovie?.movieName ?? movie.movieName)
+                Text(storedMovie?.movieName ?? movie.filmName)
                     .font(.system(size: 18))
                     .frame(width: 150, alignment: .leading)
                     .lineLimit(5)
                     .bold()
-                Text("⭐️ \(String(format: "%.1f", storedMovie?.movieRating ?? movie.movieRating ?? 0.0))")
+                Text("⭐️ \(String(format: "%.1f", storedMovie?.movieRating ?? movie.filmRating ?? 0.0))")
             }
             .foregroundColor(.white)
             .frame(width: 170, height: 70, alignment: .leading)
@@ -130,7 +130,7 @@ struct MoviesDetailView: View {
         .padding(.leading, 18)
     }
 
-    private func makeCountryProductionView(movie: MovieDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
+    private func makeCountryProductionView(movie: FilmDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
         VStack(alignment: .leading) {
             Text(storedMovie?.movieDescription ?? movie.description ?? "")
                 .font(.system(size: 14))
@@ -146,7 +146,7 @@ struct MoviesDetailView: View {
         .padding(.horizontal, 15)
     }
 
-    private func makeStarringView(movie: MovieDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
+    private func makeStarringView(movie: FilmDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
         VStack(alignment: .leading) {
             Text("Актеры и съемочная группа")
                 .fontWeight(.medium)
@@ -206,7 +206,7 @@ struct MoviesDetailView: View {
         .foregroundColor(.white)
     }
 
-    private func makeRecommendedMoviesView(movie: MovieDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
+    private func makeRecommendedMoviesView(movie: FilmDetail, storedMovie: SwiftDataMovieDetail? = nil) -> some View {
         VStack(alignment: .leading) {
             Text("Смотрите также")
                 .font(.system(size: 14))
@@ -215,7 +215,7 @@ struct MoviesDetailView: View {
                 .frame(height: 12)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    let similarMovies = storedMovie?.similarMovies ?? movie.similarMovies
+                    let similarMovies = storedMovie?.similarMovies ?? movie.similarFilms
                     ForEach(similarMovies, id: \.id) { movie in
                         VStack(alignment: .leading, spacing: 8) {
                             if let url = URL(string: movie.imageUrl ?? "") {
@@ -229,7 +229,7 @@ struct MoviesDetailView: View {
                                         .frame(width: 170, height: 220)
                                 }
                             }
-                            Text(movie.movieName ?? "???")
+                            Text(movie.filmName ?? "???")
                                 .font(.system(size: 16))
                                 .frame(width: 170, height: 18, alignment: .leading)
                         }

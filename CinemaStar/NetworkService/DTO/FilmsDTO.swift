@@ -4,12 +4,12 @@
 import Foundation
 
 /// Массив фильмов
-struct MoviesDTO: Codable {
-    let docs: [MovieDTO]
+struct FilmsDTO: Codable {
+    let docs: [FilmDTO]
 }
 
 /// Фильм
-struct MovieDTO: Codable {
+struct FilmDTO: Codable {
     /// Имя фильма
     let name: String
     /// ID фильма
@@ -31,7 +31,7 @@ struct MovieDTO: Codable {
     /// Языки
     let spokenLanguages: [SpokenLanguagesDTO]?
     /// Похожие фильмы
-    let similarMovies: [MovieDTO]?
+    let similarFilms: [FilmDTO]?
 }
 
 /// Картинка фильма

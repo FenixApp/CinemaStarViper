@@ -4,16 +4,16 @@
 import SwiftUI
 
 /// Модель фильма
-struct Movie {
+struct Film {
     let imageUrl: String?
-    let movieName: String?
+    let filmName: String?
     let rating: Double?
     let id: Int
     var image: UIImage?
 
-    init(dto: MovieDTO) {
+    init(dto: FilmDTO) {
         imageUrl = dto.poster.url
-        movieName = dto.name
+        filmName = dto.name
         rating = dto.rating?.kp
         id = dto.id
     }

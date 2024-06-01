@@ -10,7 +10,7 @@ final class Builder {
         let interactor = MoviesInteractor()
         let router = MoviesRouter()
         let networkService = NetworkService()
-        let view = MoviesView(presenter: presenter)
+        let view = FilmsView(presenter: presenter)
 
         presenter.interactor = interactor
         presenter.view = view

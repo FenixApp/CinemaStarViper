@@ -27,8 +27,8 @@ class MoviesDetailInteractor: MoviesDetailInteractorProtocol {
                     print("Failed to fetch users: \(error.localizedDescription)")
                 }
             }, receiveValue: { [unowned self] movieDTO in
-                var movieDetail = MovieDetail(dto: movieDTO)
-                var actors: [MovieActor] = movieDetail.actors
+                var movieDetail = FilmDetail(dto: movieDTO)
+                var actors: [FilmActor] = movieDetail.actors
                 if let url = URL(string: movieDetail.imageURL ?? "") {
                     networkService?.fetchImage(from: url)
                         .receive(on: DispatchQueue.main)

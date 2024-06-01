@@ -1,4 +1,4 @@
-// MoviesView.swift
+// FilmsView.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Combine
@@ -6,7 +6,7 @@ import SwiftData
 import SwiftUI
 
 /// Вью экрана с фильмами
-struct MoviesView: View {
+struct FilmsView: View {
     @StateObject var presenter: MoviesPresenter
     @Query var swiftDataStoredMovies: [SwiftDataMovie]
     @Environment(\.modelContext) var context
@@ -63,7 +63,7 @@ struct MoviesView: View {
 }
 
 #Preview {
-    MoviesView(presenter: MoviesPresenter())
+    FilmsView(presenter: MoviesPresenter())
 }
 
 /// Вью с фильмами
@@ -75,7 +75,7 @@ struct MoviesCollectionView: View {
         GridItem(.flexible())
     ]
 
-    var movies: [Movie] = []
+    var movies: [Film] = []
     var swiftDataMovies: [SwiftDataMovie] = []
 
     var body: some View {
@@ -128,7 +128,7 @@ struct MoviesCollectionView: View {
                                 }
                                 Spacer()
                                 VStack(alignment: .leading) {
-                                    Text(String(movie.movieName ?? ""))
+                                    Text(String(movie.filmName ?? ""))
                                     Text("⭐️ \(String(format: "%.1f", movie.rating ?? 0.0))")
                                 }
                                 .frame(width: 170, height: 40, alignment: .leading)

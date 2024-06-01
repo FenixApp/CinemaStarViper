@@ -14,9 +14,9 @@ final class SwiftDataMovieDetail: Identifiable {
     let year: Int?
     let country: String?
     let contentType: String?
-    var actors: [MovieActor] = []
+    var actors: [FilmActor] = []
     let language: String?
-    var similarMovies: [SimilarMovie] = []
+    var similarMovies: [SimilarFilm] = []
     var image: Data?
     var id = UUID()
 
@@ -29,9 +29,9 @@ final class SwiftDataMovieDetail: Identifiable {
         year: Int?,
         country: String?,
         contentType: String?,
-        actors: [MovieActor],
+        actors: [FilmActor],
         language: String?,
-        similarMovies: [SimilarMovie],
+        similarMovies: [SimilarFilm],
         image: Data? = nil
     ) {
         self.movieName = movieName

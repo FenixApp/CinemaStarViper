@@ -28,7 +28,7 @@ class MoviesInteractor: MoviesInteractorProtocol {
                     print("Failed to fetch users: \(error.localizedDescription)")
                 }
             }, receiveValue: { [unowned self] moviesDTO in
-                var movies = moviesDTO.docs.map { Movie(dto: $0) }
+                var movies = moviesDTO.docs.map { Film(dto: $0) }
 
                 let group = DispatchGroup()
 
