@@ -3,14 +3,12 @@
 
 import Foundation
 
-/// Состояние загрузки данных
-enum ViewState<Model> {
+/// Состояние данных на экране с фильмами
+public enum ViewState<Model> {
     /// Загрузка данных
     case loading
     /// Данные загружены
-    case data(Model)
-    /// Данных отсутствуют
-    case noData
+    case data(_ data: Model)
     /// Ошибка
-    case error(_ error: Error)
+    case error
 }

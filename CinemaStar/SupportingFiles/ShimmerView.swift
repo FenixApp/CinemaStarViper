@@ -1,33 +1,37 @@
 // ShimmerView.swift
 // Copyright © RoadMap. All rights reserved.
 
-import UIKit
+import SwiftUI
 
-/// Представление шиммера
-class ShimmerView: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
+/// Вью с шиммером
+struct ShimmerView: View {
+    @State private var startPoint: UnitPoint = .init(x: -4, y: 0)
+    @State private var endPoint: UnitPoint = .init(x: 0, y: 0)
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configure()
-    }
+    private var gradientColors = [
+        .clear,
+        Color.appLightGray.opacity(0.4),
+        .clear
+    ]
 
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        startShimmerAnimate()
+    var body: some View {
+        LinearGradient(
+            colors: gradientColors,
+            startPoint: startPoint,
+            endPoint: endPoint
+        )
+        .onAppear {
+            withAnimation(
+                .linear(duration: 1)
+                    .repeatForever(autoreverses: false)
+            ) {
+                startPoint = .init(x: 2, y: 0)
+                endPoint = .init(x: 4, y: 0)
+            }
+        }
     }
+}
 
-    override func willRemoveSubview(_ subview: UIView) {
-        super.willRemoveSubview(subview)
-        stopShimmerAnimate()
-    }
-
-    private func configure() {
-        translatesAutoresizingMaskIntoConstraints = false
-        layer.masksToBounds = true
-        layer.cornerRadius = 8
-    }
+#Preview {
+    ShimmerView()
 }

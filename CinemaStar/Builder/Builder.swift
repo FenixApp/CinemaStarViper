@@ -1,29 +1,42 @@
 // Builder.swift
 // Copyright © RoadMap. All rights reserved.
 
-import UIKit
+import SwiftUI
 
-/// Протокол для создания модулей
-protocol BuilderProtocol {
-    /// Создание модуля с фильмами
-    func makeFilmsModule(coordinator: FilmsCoordinator) -> FilmsViewController
-    /// Создание модуля с детальным описанием фильма
-    func makeDetailFilmModule(coordinator: FilmsCoordinator, id: Int?) -> FilmDetailViewController
-}
+/// Сборщик модулей
+final class Builder {
+    /// Сборка экрана с фильмами
+    static func buildFilmsModule() -> some View {
+        let presenter = FilmsPresenter()
+        let interactor = FilmsInteractor()
+        let router = FilmsRouter()
+        let networkService = NetworkService()
+        let view = FilmsView(presenter: presenter)
 
-/// Билдер приложения
-final class Builder: BuilderProtocol {
-    func makeFilmsModule(coordinator: FilmsCoordinator) -> FilmsViewController {
-        let filmsViewModel = FilmsViewModel(coordinator: coordinator)
-        let filmsView = FilmsViewController()
-        filmsView.filmsViewModel = filmsViewModel
-        return filmsView
+        presenter.interactor = interactor
+        presenter.view = view
+        presenter.router = router
+        interactor.presenter = presenter
+        interactor.networkService = networkService
+
+        return view
     }
 
-    func makeDetailFilmModule(coordinator: FilmsCoordinator, id: Int?) -> FilmDetailViewController {
-        let filmDetailViewModel = FilmDetailViewModel(coordinator: coordinator, filmId: id)
-        let filmDetailView = FilmDetailViewController()
-        filmDetailView.filmDetailViewModel = filmDetailViewModel
-        return filmDetailView
+    /// Сборка экрана с детальным описанием фильма
+    static func buildFilmDetailsModule(id: Int) -> some View {
+        let interactor = FilmDetailsInteractor()
+        let presenter = FilmDetailsPresenter()
+        let router = FilmDetailsRouter()
+        let networkService = NetworkService()
+        var view = FilmDetailsView(presenter: presenter)
+
+        view.id = id
+        presenter.interactor = interactor
+        presenter.router = router
+        presenter.view = view
+        interactor.presenter = presenter
+        interactor.networkService = networkService
+
+        return view
     }
 }
