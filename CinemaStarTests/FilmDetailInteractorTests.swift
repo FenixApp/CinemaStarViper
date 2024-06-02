@@ -42,16 +42,16 @@ final class FilmDetailInteractorTests: XCTestCase {
 
     func testFetchFilmDetailsSuccess() {
         let filmDTO = FilmDTO(
-            name: "Avengers",
-            id: 12345,
-            poster: PosterDTO(url: "https://marvel.com/avengers.jpg"),
+            name: "Fallout",
+            id: 54321,
+            poster: PosterDTO(url: "https://upload.wikimedia.org/wikipedia/ru/f/f0/Fallout_Amazon_poster.jpeg"),
             rating: RatingDTO(kp: 10),
-            description: "Marvel Avengers",
-            year: 2012,
+            description: "Fallout - war never changes",
+            year: 2024,
             countries: nil,
             type: nil,
             persons: [
-                PersonDTO(name: "Robert Downey Jr.", photo: nil)
+                PersonDTO(name: "Ella Purnell", photo: nil)
             ],
             spokenLanguages: nil,
             similarFilms: nil
@@ -62,7 +62,7 @@ final class FilmDetailInteractorTests: XCTestCase {
 
         let expectation = self.expectation(description: "fetchFilmDetails")
 
-        interactor.fetchFilmDetails(by: 12345)
+        interactor.fetchFilmDetails(by: 54321)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             expectation.fulfill()
@@ -71,11 +71,11 @@ final class FilmDetailInteractorTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertTrue(mockPresenter.didFetchFilmDetail)
-        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.year, 2012)
-        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.filmName, "Avengers")
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.year, 2024)
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.filmName, "Fallout")
         XCTAssertEqual(mockPresenter.fetchedFilmDetail?.image, filmImage)
         XCTAssertEqual(mockPresenter.fetchedFilmDetail?.filmRating, 10)
-        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.actors.first?.name, "Robert Downey Jr.")
+        XCTAssertEqual(mockPresenter.fetchedFilmDetail?.actors.first?.name, "Ella Purnell")
     }
 
     func testFetchFilmDetailsFailure() {
@@ -84,7 +84,7 @@ final class FilmDetailInteractorTests: XCTestCase {
 
         let expectation = self.expectation(description: "fetchFilmDetails")
 
-        interactor.fetchFilmDetails(by: 12345)
+        interactor.fetchFilmDetails(by: 54321)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             expectation.fulfill()
