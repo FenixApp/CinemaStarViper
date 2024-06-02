@@ -3,38 +3,41 @@
 
 import SwiftUI
 
-/// Shimmer
+/// Шиммер для экрана с детальным описанием фильма
 struct FilmDetailsShimmerView: View {
     let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     var body: some View {
         backgroundStackView(color: gradientColor) {
-            ScrollView(showsIndicators: false) {
-                VStack {
-                    makeFilmPosterView(film: items)
-                    Spacer()
-                        .frame(height: 16)
-                    watchButtonView
-                    Spacer()
-                        .frame(height: 16)
-                    makeCountryProductionView(movie: items)
-                    Spacer()
-                        .frame(height: 16)
-                    makeStarringView(movie: items)
-                    Spacer()
-                        .frame(height: 10)
-                    makeRecommendedFilmsView(movie: items)
-                }
+            scrollView
+                .navigationBarBackButtonHidden(true)
+        }
+    }
+
+    private var scrollView: some View {
+        ScrollView(showsIndicators: false) {
+            VStack {
+                makeFilmPosterView(film: items)
+                Spacer()
+                    .frame(height: 16)
+                watchButtonView
+                Spacer()
+                    .frame(height: 16)
+                makeCountryProductionView(film: items)
+                Spacer()
+                    .frame(height: 16)
+                makeStarringView(film: items)
+                Spacer()
+                    .frame(height: 10)
+                makeRecommendedFilmsView(film: items)
             }
-            .navigationBarBackButtonHidden(true)
         }
     }
 
     private var watchButtonView: some View {
-        ShimmerBoxView()
+        ShimmerView()
             .foregroundColor(.white)
             .frame(width: 358, height: 48)
-            .background(.gradientSecond)
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
@@ -44,10 +47,10 @@ struct FilmDetailsShimmerView: View {
 
     private func makeFilmPosterView(film: [Int]) -> some View {
         HStack {
-            ShimmerBoxView()
+            ShimmerView()
                 .frame(width: 170, height: 200)
                 .cornerRadius(10)
-            ShimmerBoxView()
+            ShimmerView()
                 .foregroundColor(.white)
                 .frame(width: 170, height: 70, alignment: .leading)
                 .cornerRadius(10)
@@ -56,15 +59,15 @@ struct FilmDetailsShimmerView: View {
         .padding(.leading, 18)
     }
 
-    private func makeCountryProductionView(movie: [Int]) -> some View {
+    private func makeCountryProductionView(film: [Int]) -> some View {
         VStack(alignment: .leading) {
-            ShimmerBoxView()
+            ShimmerView()
                 .frame(width: 355, height: 100)
                 .cornerRadius(10)
                 .padding(.leading, 4)
             Spacer()
                 .frame(height: 10)
-            ShimmerBoxView()
+            ShimmerView()
                 .frame(width: 355, height: 20)
                 .cornerRadius(10)
                 .padding(.leading, 4)
@@ -72,9 +75,9 @@ struct FilmDetailsShimmerView: View {
         .padding(.horizontal, 15)
     }
 
-    private func makeStarringView(movie: [Int]) -> some View {
+    private func makeStarringView(film: [Int]) -> some View {
         VStack(alignment: .leading) {
-            ShimmerBoxView()
+            ShimmerView()
                 .frame(width: 355, height: 20)
                 .cornerRadius(10)
                 .padding(.leading, 4)
@@ -84,12 +87,12 @@ struct FilmDetailsShimmerView: View {
                 LazyHStack {
                     ForEach(items, id: \.self) { _ in
                         VStack(spacing: 2) {
-                            ShimmerBoxView()
+                            ShimmerView()
                                 .frame(width: 50, height: 72)
                                 .cornerRadius(8)
                             Spacer()
                                 .frame(height: 4)
-                            ShimmerBoxView()
+                            ShimmerView()
                                 .frame(width: 50, height: 14)
                                 .cornerRadius(8)
                         }
@@ -100,12 +103,8 @@ struct FilmDetailsShimmerView: View {
             Spacer()
                 .frame(height: 14)
             VStack(alignment: .leading, spacing: 5) {
-                ShimmerBoxView()
-                    .frame(width: 355, height: 15)
-                    .cornerRadius(10)
-                    .padding(.leading, 4)
-                ShimmerBoxView()
-                    .frame(width: 355, height: 15)
+                ShimmerView()
+                    .frame(width: 355, height: 45)
                     .cornerRadius(10)
                     .padding(.leading, 4)
             }
@@ -114,9 +113,9 @@ struct FilmDetailsShimmerView: View {
         .foregroundColor(.white)
     }
 
-    private func makeRecommendedFilmsView(movie: [Int]) -> some View {
+    private func makeRecommendedFilmsView(film: [Int]) -> some View {
         VStack(alignment: .leading) {
-            ShimmerBoxView()
+            ShimmerView()
                 .frame(width: 355, height: 15)
                 .cornerRadius(10)
                 .padding(.leading, 4)
@@ -125,11 +124,11 @@ struct FilmDetailsShimmerView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     VStack(alignment: .trailing) {
-                        ShimmerBoxView()
+                        ShimmerView()
                             .frame(width: 170, height: 220)
                             .cornerRadius(8)
                             .padding(.leading, 4)
-                        ShimmerBoxView()
+                        ShimmerView()
                             .frame(width: 170, height: 16)
                             .cornerRadius(10)
                     }

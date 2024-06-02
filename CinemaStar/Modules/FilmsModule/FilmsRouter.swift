@@ -3,13 +3,13 @@
 
 import Foundation
 
-/// Протокол для взаимодействия с роутером
+/// Протокол для роутера
 protocol FilmsRouterProtocol {
     func navigateToDetailScreen(with presenter: FilmsPresenter, id: Int)
 }
 
 /// Роутер экрана с фильмами
-class FilmsRouter: FilmsRouterProtocol {
+final class FilmsRouter: FilmsRouterProtocol {
     func navigateToDetailScreen(with presenter: FilmsPresenter, id: Int) {
         presenter.selectedFilmID = id
     }

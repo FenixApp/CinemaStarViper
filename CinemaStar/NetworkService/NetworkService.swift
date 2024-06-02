@@ -4,11 +4,14 @@
 import Combine
 import SwiftUI
 
-/// Протокол для взаимодействия с нетворк сервисом
+/// Протокол для нетворк сервиса
 protocol NetworkServiceProtocol {
+    /// Запрос на получение списка фильмов
     func fetchFilms() -> AnyPublisher<FilmsDTO, Error>
-    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error>
+    /// Запрос на получения фильма
     func fetchFilm(by id: Int) -> AnyPublisher<FilmDTO, Error>
+    /// Запрос на получение изображения
+    func fetchImage(from url: URL) -> AnyPublisher<UIImage?, Error>
 }
 
 /// Нетворк сервис
@@ -16,6 +19,8 @@ class NetworkService: NetworkServiceProtocol {
     enum Constants {
         static let baseUrl = "https://api.kinopoisk.dev/v1.4/movie/"
         static let filmsUrl = "https://api.kinopoisk.dev/v1.4/movie/search?query=история"
+        static let apiKey = "0KP9NZQ-KWB4E3K-PXX8XVX-GP8T0PD"
+        static let headerField = "X-API-KEY"
     }
 
     func fetchFilms() -> AnyPublisher<FilmsDTO, Error> {
@@ -25,7 +30,7 @@ class NetworkService: NetworkServiceProtocol {
         }
 
         var request = URLRequest(url: url)
-        request.setValue("0KP9NZQ-KWB4E3K-PXX8XVX-GP8T0PD", forHTTPHeaderField: "X-API-KEY")
+        request.setValue(Constants.apiKey, forHTTPHeaderField: Constants.headerField)
 
         return URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)
@@ -40,7 +45,7 @@ class NetworkService: NetworkServiceProtocol {
         }
 
         var request = URLRequest(url: url)
-        request.setValue("0KP9NZQ-KWB4E3K-PXX8XVX-GP8T0PD", forHTTPHeaderField: "X-API-KEY")
+        request.setValue(Constants.apiKey, forHTTPHeaderField: Constants.headerField)
 
         return URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)

@@ -4,16 +4,19 @@
 import Combine
 import Foundation
 
-///  Протокол для взаимодействия с интерактором
+/// Протокол для интерактора
 protocol FilmDetailsInteractorProtocol {
     func fetchFilmDetails(by id: Int)
 }
 
-/// Интерактор для  экрана с детальным фильмом
-class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
+/// Интерактор для экрана с детальным описанием фильма
+final class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
+    enum Constant {
+        static let noText = ""
+    }
+
     var presenter: (any FilmDetailsPresenterProtocol)?
     var networkService: NetworkServiceProtocol?
-
     var cancellablesSet: Set<AnyCancellable> = []
 
     func fetchFilmDetails(by id: Int) {
@@ -29,7 +32,7 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
             }, receiveValue: { [unowned self] filmDTO in
                 var filmDetail = FilmDetail(dto: filmDTO)
                 var actors: [FilmActor] = filmDetail.actors
-                if let url = URL(string: filmDetail.imageURL ?? "") {
+                if let url = URL(string: filmDetail.imageURL ?? Constant.noText) {
                     networkService?.fetchImage(from: url)
                         .receive(on: DispatchQueue.main)
                         .sink { completion in
@@ -57,7 +60,6 @@ class FilmDetailsInteractor: FilmDetailsInteractorProtocol {
                                     })
                                     .store(in: &cancellablesSet)
                             }
-
                             group.notify(queue: .main) {
                                 filmDetail.actors = actors
                                 self.presenter?.didFetchFilmDetail(filmDetail)

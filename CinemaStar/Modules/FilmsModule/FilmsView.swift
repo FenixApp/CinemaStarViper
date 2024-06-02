@@ -7,47 +7,54 @@ import SwiftUI
 
 /// Вью экрана с фильмами
 struct FilmsView: View {
+    enum Constant {
+        static let error = "Error"
+    }
+
+    @Environment(\.modelContext) var context
     @StateObject var presenter: FilmsPresenter
     @Query var swiftDataStoredFilms: [SwiftDataFilm]
-    @Environment(\.modelContext) var context
 
     var body: some View {
         NavigationStack {
             backgroundStackView(color: gradientColor) {
-                VStack {
-                    switch presenter.state {
-                    case .loading:
-                        FilmsShimmerView()
-                    case let .data(fetchedMovies):
-                        if fetchedMovies.isEmpty {
-                            FilmsCollectionView(swiftDataFilms: swiftDataStoredFilms)
-                        } else {
-                            FilmsCollectionView(films: fetchedMovies)
-                        }
-                    case .error:
-                        Text("ERROR!!!")
-                    }
-                }
-                .environmentObject(presenter)
-                .background(
-                    NavigationLink(
-                        destination:
-                        Builder.buildFilmDetailsModule(id: presenter.selectedFilmID ?? 0),
-                        isActive: Binding(
-                            get: { presenter.selectedFilmID != nil },
-                            set: { if !$0 { presenter.selectedFilmID = nil } }
-                        )
-                    ) {
-                        EmptyView()
-                    }
-                )
-                .onAppear {
-                    guard case .loading = presenter.state else { return }
-                    if swiftDataStoredFilms.isEmpty {
-                        presenter.prepareFilms(context: context)
+                switchStateView
+            }
+        }
+    }
+
+    private var switchStateView: some View {
+        NavigationStack {
+            VStack {
+                switch presenter.state {
+                case .loading:
+                    FilmsShimmerView()
+                case let .data(fetchedFilms):
+                    if fetchedFilms.isEmpty {
+                        FilmsCollectionView(swiftDataFilms: swiftDataStoredFilms)
                     } else {
-                        presenter.state = .data([])
+                        FilmsCollectionView(films: fetchedFilms)
                     }
+                case .error:
+                    Text(Constant.error)
+                }
+            }
+            .environmentObject(presenter)
+            .navigationDestination(
+                isPresented: Binding(
+                    get: { presenter.selectedFilmID != nil },
+                    set: { if !$0 { presenter.selectedFilmID = nil } }
+                ),
+                destination: {
+                    Builder.buildFilmDetailsModule(id: presenter.selectedFilmID ?? 0)
+                }
+            )
+            .onAppear {
+                guard case .loading = presenter.state else { return }
+                if swiftDataStoredFilms.isEmpty {
+                    presenter.prepareFilms(context: context)
+                } else {
+                    presenter.state = .data([])
                 }
             }
         }
@@ -64,85 +71,4 @@ struct FilmsView: View {
 
 #Preview {
     FilmsView(presenter: FilmsPresenter())
-}
-
-/// Вью с фильмами
-struct FilmsCollectionView: View {
-    @EnvironmentObject var presenter: FilmsPresenter
-
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-
-    var films: [Film] = []
-    var swiftDataFilms: [SwiftDataFilm] = []
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            VStack {
-                Text("Смотри исторические\nфильмы на ")
-                    +
-                    Text("CINEMA STAR")
-                    .fontWeight(.heavy)
-            }
-            .padding(.horizontal)
-            ScrollView(showsIndicators: false) {
-                LazyVGrid(columns: columns, spacing: 20) {
-                    if films.isEmpty {
-                        ForEach(swiftDataFilms, id: \.id) { film in
-                            VStack {
-                                if let image = UIImage(data: film.image ?? Data()) {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .frame(width: 170, height: 220)
-                                        .cornerRadius(8)
-                                } else {
-                                    ProgressView()
-                                        .frame(width: 170, height: 220)
-                                }
-                                Spacer()
-                                VStack(alignment: .leading) {
-                                    Text(String(film.filmName))
-                                    Text("⭐️ \(String(format: "%.1f", film.rating))")
-                                }
-                                .frame(width: 170, height: 40, alignment: .leading)
-                            }
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .onTapGesture {
-                                presenter.goToDetailScreen(with: film.filmID)
-                            }
-                        }
-                    } else {
-                        ForEach(films, id: \.id) { film in
-                            VStack {
-                                if let image = film.image {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .frame(width: 170, height: 220)
-                                        .cornerRadius(8)
-                                } else {
-                                    ProgressView()
-                                        .frame(width: 170, height: 220)
-                                }
-                                Spacer()
-                                VStack(alignment: .leading) {
-                                    Text(String(film.filmName ?? ""))
-                                    Text("⭐️ \(String(format: "%.1f", film.rating ?? 0.0))")
-                                }
-                                .frame(width: 170, height: 40, alignment: .leading)
-                            }
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .onTapGesture {
-                                presenter.goToDetailScreen(with: film.id)
-                            }
-                        }
-                    }
-                }
-                .padding()
-            }
-        }
-    }
 }

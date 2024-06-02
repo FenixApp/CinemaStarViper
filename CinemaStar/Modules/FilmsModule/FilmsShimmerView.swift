@@ -3,10 +3,9 @@
 
 import SwiftUI
 
-/// Shimmer view
+/// Шиммер для экрана с фильмами
 struct FilmsShimmerView: View {
     let items = Array(1 ... 6)
-
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -19,7 +18,7 @@ struct FilmsShimmerView: View {
                     Spacer()
                         .frame(height: 140)
                     VStack {
-                        ShimmerBoxView()
+                        ShimmerView()
                             .frame(width: 230, height: 50)
                             .cornerRadius(8)
                     }
@@ -31,14 +30,12 @@ struct FilmsShimmerView: View {
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(items, id: \.self) { _ in
                                 VStack {
-                                    ShimmerBoxView()
+                                    ShimmerView()
                                         .frame(width: 170, height: 220)
                                         .cornerRadius(8)
                                     Spacer()
                                     VStack(alignment: .leading) {
-                                        ShimmerBoxView()
-                                            .cornerRadius(8)
-                                        ShimmerBoxView()
+                                        ShimmerView()
                                             .cornerRadius(8)
                                     }
                                     .frame(width: 170, height: 40, alignment: .leading)

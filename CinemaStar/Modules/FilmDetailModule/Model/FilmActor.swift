@@ -5,11 +5,13 @@ import Foundation
 
 /// Информация об актере
 struct FilmActor: Identifiable, Codable {
+    /// Идентификатор
     var id = UUID()
-    /// Имя актера
+    /// Имя
     let name: String
-    /// Ссылка на изображение актера
+    /// Ссылка на изображение с актером
     let imageURL: String
+    /// Изображение
     var image: Data?
 
     init?(dto: PersonDTO) {
