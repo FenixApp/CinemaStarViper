@@ -63,12 +63,12 @@ final class FilmsInteractorTests: XCTestCase {
     func testFetchFilmsSuccess() {
         let filmsDTO = FilmsDTO(docs: [
             FilmDTO(
-                name: "Avengers",
-                id: 12345,
-                poster: PosterDTO(url: "qwewqeqeq"),
+                name: "Fallout",
+                id: 54321,
+                poster: PosterDTO(url: "woeuwgoewgowe"),
                 rating: RatingDTO(kp: 10),
-                description: "Marvel Avengers",
-                year: 2012,
+                description: "Fallout - war never changes",
+                year: 2024,
                 countries: nil,
                 type: nil,
                 persons: nil,
@@ -76,12 +76,12 @@ final class FilmsInteractorTests: XCTestCase {
                 similarFilms: nil
             ),
             FilmDTO(
-                name: "Batman",
-                id: 54321,
-                poster: PosterDTO(url: "erwrqwt"),
+                name: "Terminator 2",
+                id: 12345,
+                poster: PosterDTO(url: "fgqwgewegh"),
                 rating: RatingDTO(kp: 9.9),
-                description: "Batman",
-                year: 2019,
+                description: "Judgment Day",
+                year: 1991,
                 countries: nil,
                 type: nil,
                 persons: nil,
@@ -105,8 +105,8 @@ final class FilmsInteractorTests: XCTestCase {
 
         XCTAssertTrue(mockPresenter.didFetchFilms)
         XCTAssertEqual(mockPresenter.fetchedFilms?.count, 2)
-        XCTAssertEqual(mockPresenter.fetchedFilms?.first?.filmName, "Avengers")
-        XCTAssertEqual(mockPresenter.fetchedFilms?.last?.filmName, "Batman")
+        XCTAssertEqual(mockPresenter.fetchedFilms?.first?.filmName, "Fallout")
+        XCTAssertEqual(mockPresenter.fetchedFilms?.last?.filmName, "Terminator 2")
         XCTAssertEqual(mockPresenter.fetchedFilms?.last?.image, image)
     }
 
