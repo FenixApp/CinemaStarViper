@@ -1,5 +1,4 @@
 // SwiftDataFilm.swift
-// Copyright © RoadMap. All rights reserved.
 
 import SwiftData
 import SwiftUI

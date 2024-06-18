@@ -1,5 +1,4 @@
 // CinemaStarApp.swift
-// Copyright © RoadMap. All rights reserved.
 
 import SwiftUI
 import UIKit

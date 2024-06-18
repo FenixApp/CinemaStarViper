@@ -1,5 +1,4 @@
 // FilmsPresenter.swift
-// Copyright © RoadMap. All rights reserved.
 
 import Combine
 import SwiftData

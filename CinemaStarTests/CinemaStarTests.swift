@@ -1,5 +1,4 @@
 // CinemaStarTests.swift
-// Copyright © RoadMap. All rights reserved.
 
 @testable import CinemaStar
 import XCTest
